@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		1169216F2D16019E0034E568 /* RSSFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSSFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		118796872D1611DC00C450DB /* RSSFeedKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RSSFeedKit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +33,7 @@
 		116921662D16019E0034E568 = {
 			isa = PBXGroup;
 			children = (
+				118796872D1611DC00C450DB /* RSSFeedKit */,
 				116921712D16019E0034E568 /* RSSFeed */,
 				116921702D16019E0034E568 /* Products */,
 			);
