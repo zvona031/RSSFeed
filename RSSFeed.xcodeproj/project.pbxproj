@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1187968A2D16248A00C450DB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 118796892D16248A00C450DB /* AppFeature */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		1169216F2D16019E0034E568 /* RSSFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSSFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		118796872D1611DC00C450DB /* RSSFeedKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RSSFeedKit; sourceTree = "<group>"; };
@@ -24,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1187968A2D16248A00C450DB /* AppFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -35,6 +40,7 @@
 			children = (
 				118796872D1611DC00C450DB /* RSSFeedKit */,
 				116921712D16019E0034E568 /* RSSFeed */,
+				118796882D16248A00C450DB /* Frameworks */,
 				116921702D16019E0034E568 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -45,6 +51,13 @@
 				1169216F2D16019E0034E568 /* RSSFeed.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		118796882D16248A00C450DB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -67,6 +80,7 @@
 			);
 			name = RSSFeed;
 			packageProductDependencies = (
+				118796892D16248A00C450DB /* AppFeature */,
 			);
 			productName = RSSFeed;
 			productReference = 1169216F2D16019E0034E568 /* RSSFeed.app */;
@@ -253,7 +267,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"RSSFeed/Preview Content\"";
 				DEVELOPMENT_TEAM = 87P2XS5ZD2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -262,6 +275,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -282,7 +296,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"RSSFeed/Preview Content\"";
 				DEVELOPMENT_TEAM = 87P2XS5ZD2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -291,6 +304,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -326,6 +340,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		118796892D16248A00C450DB /* AppFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppFeature;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 116921672D16019E0034E568 /* Project object */;
 }

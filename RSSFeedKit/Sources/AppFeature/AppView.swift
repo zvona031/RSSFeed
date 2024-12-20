@@ -1,14 +1,10 @@
-//
-//  ContentView.swift
-//  RSSFeed
-//
-//  Created by Zvonimir Pavlović on 20.12.2024..
-//
-
 import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
+public struct AppView: View {
+
+    public init() {}
+
+    public var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
@@ -20,5 +16,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    AppView()
 }
