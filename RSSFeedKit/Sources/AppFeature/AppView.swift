@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import SwiftUI
+import FeedsFeature
 
 public struct AppView: View {
     @Perception.Bindable private var store: StoreOf<AppFeature>
@@ -14,8 +15,7 @@ public struct AppView: View {
         WithPerceptionTracking {
             TabView(selection: $store.tab) {
                 NavigationStack() {
-                    Text("Feeds")
-                        .navigationTitle("Feeds")
+                    FeedsView(store: store.scope(state: \.feedsFeature, action: \.feedsFeature))
                 }
                 .tabItem {
                     Text("Feeds tab")
