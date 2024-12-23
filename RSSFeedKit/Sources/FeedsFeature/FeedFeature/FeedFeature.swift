@@ -3,7 +3,9 @@ import Domain
 import Foundation
 
 @Reducer
-public struct FeedFeature {
+public struct FeedFeature: Sendable {
+    @Dependency(\.rssFeedClient) var rssFeedClient
+
     @ObservableState
     public struct State: Identifiable {
         public var id: URL {
@@ -74,10 +76,8 @@ public struct FeedFeature {
     }
 
     private func fetchRssFeed(state: inout State) -> EffectOf<Self> {
-        return .run { send in
-            // TODO: add fetching of rss feed
-            try await Task.sleep(nanoseconds: 3_000_000_000)
-            await send(.rssFeedResponse(.success(RSSFeed(url: URL(string: "https://www.apple.com")!, name: "Name", description: "Description", imageUrl: nil, items: []))))
+        return .run { [url = state.url] send in
+            await send(.rssFeedResponse(Result { try await rssFeedClient.get(url: url) }))
         }
     }
 }

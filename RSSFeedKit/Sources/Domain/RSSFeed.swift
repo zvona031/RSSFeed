@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RSSFeed: Identifiable {
+public struct RSSFeed: Identifiable, Sendable {
     public var id: URL {
         url
     }
