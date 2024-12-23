@@ -13,12 +13,10 @@ public struct FeedsView: View {
         WithPerceptionTracking {
             VStack {
                 switch store.viewState {
-                case .content(let feeds):
-                    ForEach(feeds) { feed in
-                        Text(feed.name)
+                case .feedList:
+                    if let store = store.scope(state: \.viewState.feedList, action: \.feedList) {
+                        FeedsListView(store: store)
                     }
-                case .emptyContent(let message):
-                    Text(message)
                 case .error(let message):
                     Text(message)
                 case .loading:

@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Foundation
 
 @Reducer
 public struct AddFeedFeature: Reducer, Sendable {
@@ -24,10 +25,15 @@ public struct AddFeedFeature: Reducer, Sendable {
     public enum Action: BindableAction, ViewAction, Sendable {
         case binding(BindingAction<State>)
         case view(View)
+        case delegate(Delegate)
 
         public enum View: Sendable {
             case cancelButtonTapped
             case addButtonTapped
+        }
+
+        public enum Delegate: Sendable {
+            case rssFeedAdded(URL)
         }
     }
 
@@ -41,9 +47,16 @@ public struct AddFeedFeature: Reducer, Sendable {
                     await dismiss()
                 }
             case .view(.addButtonTapped):
-                // TODO: handle checking if URL is valid and delegate adding to the parent
-                return .none
+                guard let url = URL(string: state.rawUrl) else {
+                    // TODO: add alert for invalid URL
+                    return .none
+                }
+                return .run { send in
+                    await send(.delegate(.rssFeedAdded(url)))
+                }
             case .binding:
+                return .none
+            case .delegate:
                 return .none
             }
         }

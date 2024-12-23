@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import Domain
+import Foundation
 
 @Reducer
 public struct FeedsFeature {
@@ -12,7 +13,7 @@ public struct FeedsFeature {
         @Presents var destination: Destination.State?
 
         public init(
-            viewState: ViewState = .loading,
+            viewState: ViewState = .feedList(FeedsListFeature.State(feeds: [])),
             destination: Destination.State? = nil
         ) {
             self.viewState = viewState
@@ -24,31 +25,42 @@ public struct FeedsFeature {
         case binding(BindingAction<State>)
         case view(ViewAction)
         case destination(PresentationAction<Destination.Action>)
+        case feedList(FeedsListFeature.Action)
 
         public enum ViewAction {
             case addButtonTapped
-            case removeFeed(RSSFeed.ID)
         }
     }
 
     public var body: some ReducerOf<Self> {
         BindingReducer()
 
-        Reduce { state, action in
+        Reduce<State, Action> { state, action in
             switch action {
             case .view(.addButtonTapped):
                 state.destination = .addFeed(AddFeedFeature.State())
                 return .none
-            case .view(.removeFeed(let id)):
-                state.viewState.modify(\.content) { $0.remove(id: id) }
+            case .destination(.presented(.addFeed(.delegate(.rssFeedAdded(let url))))):
+                guard !(state.viewState.feedList?.feeds.contains(where: { $0.url == url }) ?? false) else {
+                    // TODO: Add alert that displays that this RSSFeed already exists
+                    state.destination = nil
+                    return .none
+                }
+                state.viewState.modify(\.feedList) { $0.feeds.append(FeedFeature.State(url: url)) }
+                state.destination = nil
                 return .none
             case .destination:
+                return .none
+            case .feedList:
                 return .none
             case .binding:
                 return .none
             }
         }
         .ifLet(\.$destination, action: \.destination)
+        .ifLet(\.viewState.feedList, action: \.feedList) {
+            FeedsListFeature()
+        }
     }
 }
 
@@ -56,9 +68,8 @@ extension FeedsFeature {
     @CasePathable
     @dynamicMemberLookup
     public enum ViewState {
-        case content(IdentifiedArrayOf<RSSFeed>)
+        case feedList(FeedsListFeature.State)
         case error(String)
-        case emptyContent(String)
         case loading
     }
 
