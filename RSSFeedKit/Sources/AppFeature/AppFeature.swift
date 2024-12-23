@@ -22,6 +22,10 @@ struct AppFeature {
 
     var body: some ReducerOf<Self> {
         BindingReducer()
+
+        Scope(state: \.feedsFeature, action: \.feedsFeature) {
+            FeedsFeature()
+        }
     }
 }
 
