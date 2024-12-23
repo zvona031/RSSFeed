@@ -6,4 +6,5 @@ public struct RSSFeed: Identifiable {
     public let name: String
     public let description: String
     public let imageUrl: URL
+    public let items: [Item]
 }
