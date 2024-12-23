@@ -1,8 +1,9 @@
 import ComposableArchitecture
 import SwiftUI
 
+@ViewAction(for: FeedsFeature.self)
 public struct FeedsView: View {
-    private let store: StoreOf<FeedsFeature>
+    @Perception.Bindable public var store: StoreOf<FeedsFeature>
 
     public init(store: StoreOf<FeedsFeature>) {
         self.store = store
@@ -24,6 +25,21 @@ public struct FeedsView: View {
                     ProgressView()
                         .progressViewStyle(.circular)
                 }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Add") {
+                        send(.addButtonTapped)
+                    }
+                }
+            }
+            .sheet(item: $store.scope(state: \.destination?.addFeed, action: \.destination.addFeed)) { store in
+                NavigationStack {
+                    AddFeedView(store: store)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationTitle("New RSS Feed")
+                }
+                .presentationDetents([.height(200)])
             }
         }
     }
