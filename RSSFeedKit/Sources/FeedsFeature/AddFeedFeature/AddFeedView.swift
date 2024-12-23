@@ -4,10 +4,12 @@ import SwiftUI
 @ViewAction(for: AddFeedFeature.self)
 public struct AddFeedView: View {
     @Perception.Bindable public var store: StoreOf<AddFeedFeature>
+    @FocusState private var focus: AddFeedFeature.Field?
 
     public var body: some View {
         WithPerceptionTracking {
             TextField("RSS Feed URL", text: $store.rawUrl)
+                .focused($focus, equals: .url)
                 .padding()
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -21,7 +23,7 @@ public struct AddFeedView: View {
                         }
                     }
                 }
-            
+                .bind($store.focus, to: $focus)
         }
     }
 }

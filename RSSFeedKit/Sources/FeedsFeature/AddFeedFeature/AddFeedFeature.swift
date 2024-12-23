@@ -10,15 +10,18 @@ public struct AddFeedFeature: Reducer, Sendable {
         var rawUrl: String
         var destination: Destination?
         var addButtonEnabled: Bool
+        var focus: Field?
 
         public init(
             rawUrl: String = "",
             destination: Destination? = nil,
-            addButtonEnabled: Bool = false
+            addButtonEnabled: Bool = false,
+            focus: Field? = .url
         ) {
             self.rawUrl = rawUrl
             self.destination = destination
             self.addButtonEnabled = addButtonEnabled
+            self.focus = focus
         }
     }
 
@@ -47,6 +50,7 @@ public struct AddFeedFeature: Reducer, Sendable {
                     await dismiss()
                 }
             case .view(.addButtonTapped):
+                state.focus = nil
                 guard let url = URL(string: state.rawUrl) else {
                     // TODO: add alert for invalid URL
                     return .none
@@ -72,5 +76,9 @@ extension AddFeedFeature {
             case success
             case error
         }
+    }
+
+    public enum Field: Sendable {
+        case url
     }
 }
