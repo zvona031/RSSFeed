@@ -23,6 +23,10 @@ let package = Package(
             url: "https://github.com/pointfreeco/swift-composable-architecture",
             from: "1.0.0"
         ),
+        .package(
+            url: "https://github.com/onevcat/Kingfisher.git",
+            from: "8.0.0"
+        )
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -32,10 +36,8 @@ let package = Package(
             name: "FeedsFeature",
             dependencies: [
                 "Domain",
-                .product(
-                    name: "ComposableArchitecture",
-                    package: "swift-composable-architecture"
-                )
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                .product(name: "Kingfisher", package: "Kingfisher"),
             ]
         ),
         .target(

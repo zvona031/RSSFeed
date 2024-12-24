@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Kingfisher
 import SwiftUI
 
 @ViewAction(for: FeedFeature.self)
@@ -34,11 +35,29 @@ struct FeedView: View {
                 }
                 Spacer()
             case .content(let rssFeed):
-                Text(rssFeed.name)
-                    .font(.headline)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .padding(.leading, 8)
+                KFImage(rssFeed.imageUrl)
+                    .placeholder {
+                        Color.gray.cornerRadius(5)
+                    }
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 60, height: 60)
+
+                VStack(alignment: .leading) {
+                    Text(rssFeed.name)
+                        .font(.headline)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .padding(.leading, 8)
+                    if !rssFeed.description.isEmpty {
+                        Text(rssFeed.description)
+                            .font(.body)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .padding(.leading, 8)
+                    }
+                }
+
                 Spacer()
                 Button(action: {
                     send(.refreshButtonTapped)
@@ -62,6 +81,7 @@ struct FeedView: View {
             }
         }
         .frame(maxWidth: .infinity)
+        .frame(height: 60)
         .padding()
         .background(Color.white) // Background color for the item
         .cornerRadius(10) // Rounded corners

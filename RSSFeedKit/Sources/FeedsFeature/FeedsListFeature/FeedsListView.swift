@@ -3,7 +3,7 @@ import SwiftUI
 
 @ViewAction(for: FeedsListFeature.self)
 public struct FeedsListView: View {
-    public let store: StoreOf<FeedsListFeature>
+    @Perception.Bindable public var store: StoreOf<FeedsListFeature>
 
     public var body: some View {
         WithPerceptionTracking {
@@ -16,6 +16,7 @@ public struct FeedsListView: View {
                             .padding()
                     }
                 }
+                .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
             }
 
         }

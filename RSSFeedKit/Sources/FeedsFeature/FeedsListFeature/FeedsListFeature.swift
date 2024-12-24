@@ -10,35 +10,68 @@ public struct FeedsListFeature {
     @ObservableState
     public struct State {
         var feeds: IdentifiedArrayOf<FeedFeature.State>
+        @Presents var destination: Destination.State?
 
         public init(
-            feeds: IdentifiedArrayOf<FeedFeature.State>
+            feeds: IdentifiedArrayOf<FeedFeature.State>,
+            destination: Destination.State? = nil
         ) {
             self.feeds = feeds
+            self.destination = destination
         }
     }
 
-    public enum Action: ViewAction {
+    public enum Action: ViewAction, BindableAction {
+        case binding(BindingAction<State>)
         case view(ViewAction)
         case feeds(IdentifiedActionOf<FeedFeature>)
+        case destination(PresentationAction<Destination.Action>)
 
         public enum ViewAction {
-            case removeFeed(IndexSet)
+//            case removeFeed(IndexSet)
+        }
+
+        public enum Alert {
+            case removeConfirmation(FeedFeature.State.ID)
         }
     }
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .view(.removeFeed(let indexSet)):
-                state.feeds.remove(atOffsets: indexSet)
+            case .feeds(.element(id: _, action: .delegate(.removeButtonTapped(let id)))):
+                state.destination = .alert(AlertState {
+                    TextState("Do you really want to remove this feed?")
+                } actions: {
+                    ButtonState {
+                        TextState("No")
+                    }
+                    ButtonState(action: .removeConfirmation(id)) {
+                        TextState("Yes")
+                    }
+                })
                 return .none
             case .feeds:
+                return .none
+            case .destination(.presented(.alert(.removeConfirmation(let id)))):
+                state.feeds.remove(id: id)
+                return .none
+            case .destination:
+                return .none
+            case .binding:
                 return .none
             }
         }
         .forEach(\.feeds, action: \.feeds) {
             FeedFeature()
         }
+        .ifLet(\.$destination, action: \.destination)
+    }
+}
+
+extension FeedsListFeature {
+    @Reducer
+    public enum Destination {
+        case alert(AlertState<FeedsListFeature.Action.Alert>)
     }
 }
