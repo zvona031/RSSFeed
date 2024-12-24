@@ -74,7 +74,13 @@ struct FeedView: View {
                 .disabled(store.isRequestInFlight)
             }
             Button {
-                send(.removeButtonTapped(store.id))
+                send(.favoriteButtonTapped)
+            } label: {
+                Image(systemName: store.isFavorite ? "star.fill" : "star")
+                    .frame(width: 24, height: 24)
+            }
+            Button {
+                send(.removeButtonTapped)
             } label: {
                 Image(systemName: "trash")
                     .frame(width: 24, height: 24)

@@ -27,9 +27,7 @@ public struct FeedsListFeature {
         case feeds(IdentifiedActionOf<FeedFeature>)
         case destination(PresentationAction<Destination.Action>)
 
-        public enum ViewAction {
-//            case removeFeed(IndexSet)
-        }
+        public enum ViewAction {}
 
         public enum Alert {
             case removeConfirmation(FeedFeature.State.ID)
@@ -39,7 +37,7 @@ public struct FeedsListFeature {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .feeds(.element(id: _, action: .delegate(.removeButtonTapped(let id)))):
+            case .feeds(.element(id: let id, action: .delegate(.removeButtonTapped))):
                 state.destination = .alert(AlertState {
                     TextState("Do you really want to remove this feed?")
                 } actions: {
@@ -50,6 +48,9 @@ public struct FeedsListFeature {
                         TextState("Yes")
                     }
                 })
+                return .none
+            case .feeds(.element(id: let id, action: .delegate(.favoriteButtonTapped))):
+                state.feeds[id: id]?.isFavorite.toggle()
                 return .none
             case .feeds:
                 return .none

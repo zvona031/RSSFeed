@@ -13,14 +13,17 @@ public struct FeedFeature: Sendable {
         }
         let url: URL
         var viewState: ViewState
+        var isFavorite: Bool
         var isRequestInFlight: Bool
 
         public init(
             url: URL,
+            isFavorite: Bool,
             viewState: ViewState = .loading,
             isRequestInFlight: Bool = false
         ) {
             self.url = url
+            self.isFavorite = isFavorite
             self.viewState = viewState
             self.isRequestInFlight = isRequestInFlight
         }
@@ -34,14 +37,16 @@ public struct FeedFeature: Sendable {
         public enum View {
             case retryButtonTapped
             case refreshButtonTapped
-            case removeButtonTapped(State.ID)
+            case removeButtonTapped
+            case favoriteButtonTapped
             case itemTapped(RSSFeed)
             case onTask
         }
 
         public enum Delegate {
             case itemTapped(RSSFeed)
-            case removeButtonTapped(State.ID)
+            case removeButtonTapped
+            case favoriteButtonTapped
         }
     }
 
@@ -59,8 +64,10 @@ public struct FeedFeature: Sendable {
                 return fetchRssFeed(state: &state)
             case .view(.itemTapped(let rssFeed)):
                 return .send(.delegate(.itemTapped(rssFeed)))
-            case .view(.removeButtonTapped(let id)):
-                return .send(.delegate(.removeButtonTapped(id)))
+            case .view(.removeButtonTapped):
+                return .send(.delegate(.removeButtonTapped))
+            case .view(.favoriteButtonTapped):
+                return .send(.delegate(.favoriteButtonTapped))
             case .rssFeedResponse(.success(let rssFeed)):
                 state.isRequestInFlight = false
                 state.viewState = .content(rssFeed)

@@ -13,7 +13,7 @@ public struct FeedsFeature {
         @Presents var destination: Destination.State?
 
         public init(
-            viewState: ViewState = .feedList(FeedsListFeature.State(feeds: [])),
+            viewState: ViewState = .feedList(FeedsListFeature.State(feeds: [.init(url: URL(string: "https://feeds.bbci.co.uk/news/world/rss.xml")!, isFavorite: false)])),
             destination: Destination.State? = nil
         ) {
             self.viewState = viewState
@@ -46,7 +46,7 @@ public struct FeedsFeature {
                     state.destination = nil
                     return .none
                 }
-                state.viewState.modify(\.feedList) { $0.feeds.append(FeedFeature.State(url: url)) }
+                state.viewState.modify(\.feedList) { $0.feeds.append(FeedFeature.State(url: url, isFavorite: false)) }
                 state.destination = nil
                 return .none
             case .destination:
