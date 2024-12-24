@@ -24,6 +24,10 @@ let package = Package(
             from: "1.0.0"
         ),
         .package(
+            url: "https://github.com/pointfreeco/swift-identified-collections",
+            from: "1.1.0"
+        ),
+        .package(
             url: "https://github.com/onevcat/Kingfisher.git",
             from: "8.0.0"
         )
@@ -31,7 +35,12 @@ let package = Package(
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
-        .target(name: "Domain"),
+        .target(
+            name: "Domain",
+            dependencies: [
+                .product(name: "IdentifiedCollections", package: "swift-identified-collections")
+            ]
+        ),
         .target(
             name: "FeedsFeature",
             dependencies: [

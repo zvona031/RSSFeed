@@ -44,7 +44,7 @@ public struct FeedFeature: Sendable {
         }
 
         public enum Delegate {
-            case itemTapped(RSSFeed)
+            case itemTapped(RSSFeed, Bool)
             case removeButtonTapped
             case favoriteButtonTapped
         }
@@ -63,7 +63,7 @@ public struct FeedFeature: Sendable {
                 state.isRequestInFlight = true
                 return fetchRssFeed(state: &state)
             case .view(.itemTapped(let rssFeed)):
-                return .send(.delegate(.itemTapped(rssFeed)))
+                return .send(.delegate(.itemTapped(rssFeed, state.isFavorite)))
             case .view(.removeButtonTapped):
                 return .send(.delegate(.removeButtonTapped))
             case .view(.favoriteButtonTapped):

@@ -1,4 +1,5 @@
 import Foundation
+import IdentifiedCollections
 
 public struct RSSFeed: Identifiable, Sendable {
     public var id: URL {
@@ -8,14 +9,14 @@ public struct RSSFeed: Identifiable, Sendable {
     public let name: String
     public let description: String
     public let imageUrl: URL?
-    public let items: [Item]
+    public let items: IdentifiedArrayOf<Item>
 
     public init(
         url: URL,
         name: String,
         description: String,
         imageUrl: URL?,
-        items: [Item]
+        items: IdentifiedArrayOf<Item>
     ) {
         self.url = url
         self.name = name

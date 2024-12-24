@@ -9,7 +9,7 @@ struct FeedView: View {
     var body: some View {
         WithPerceptionTracking {
             itemView()
-                .task {
+                .onFirstAppear {
                     send(.onTask)
                 }
         }
@@ -92,5 +92,9 @@ struct FeedView: View {
         .background(Color.white) // Background color for the item
         .cornerRadius(10) // Rounded corners
         .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2) // Optional shadow
+        .onTapGesture {
+            guard let rssFeed = store.viewState.content else { return }
+            send(.itemTapped(rssFeed))
+        }
     }
 }
