@@ -17,6 +17,9 @@ public struct FeedsListView: View {
                     }
                 }
                 .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+                .navigationDestination(item: $store.scope(state: \.destination?.details, action: \.destination.details)) { store in
+                    FeedDetailsView(store: store)
+                }
             }
 
         }
