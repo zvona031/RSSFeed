@@ -37,9 +37,9 @@ public struct FeedDetailsView: View {
                                     .padding(.leading, 8)
                             }
                         }
+                        .frame(maxWidth: .infinity)
                     }
                     .padding()
-                    .frame(maxWidth: .infinity)
                     .frame(height: 60)
                     .background(Color.white) // Background color for the item
                     .cornerRadius(10) // Rounded corners

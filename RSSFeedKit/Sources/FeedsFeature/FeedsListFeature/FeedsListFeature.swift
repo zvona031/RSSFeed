@@ -5,6 +5,8 @@ import Foundation
 @Reducer
 public struct FeedsListFeature {
 
+    @Dependency(\.rssFeedUrlsClient.delete) var deleteRssFeedUrl
+
     public init() {}
 
     @ObservableState
@@ -24,6 +26,7 @@ public struct FeedsListFeature {
     public enum Action: ViewAction, BindableAction {
         case binding(BindingAction<State>)
         case view(ViewAction)
+        case delegate(Delegate)
         case feeds(IdentifiedActionOf<FeedFeature>)
         case destination(PresentationAction<Destination.Action>)
 
@@ -31,6 +34,12 @@ public struct FeedsListFeature {
 
         public enum Alert {
             case removeConfirmation(FeedFeature.State.ID)
+        }
+
+        public enum Delegate {
+            case favoriteStateChanged(FeedFeature.State)
+            case feedRemoved(FeedFeature.State.ID)
+            case feedStateUpdated(FeedFeature.ViewState, FeedFeature.State.ID)
         }
     }
 
@@ -50,22 +59,25 @@ public struct FeedsListFeature {
                 })
                 return .none
             case .feeds(.element(id: let id, action: .delegate(.favoriteButtonTapped))):
-                state.feeds[id: id]?.isFavorite.toggle()
-                return .none
+                return favoriteButtonTapped(state: &state, id: id)
             case .feeds(.element(id: _, action: .delegate(.itemTapped(let rssFeed, let isFavorite)))):
                 state.destination = .details(FeedDetailsFeature.State(feed: rssFeed, isFavorite: isFavorite))
                 return .none
+            case .feeds(.element(id: let id, action: .delegate(.itemUpdated(let viewState)))):
+                return .send(.delegate(.feedStateUpdated(viewState, id)))
             case .feeds:
                 return .none
             case .destination(.presented(.alert(.removeConfirmation(let id)))):
-                state.feeds.remove(id: id)
-                return .none
+                let feedState = state.feeds.remove(id: id)
+                try? deleteRssFeedUrl(id)
+                return .send(.delegate(.feedRemoved(id)))
             case .destination(.presented(.details(.delegate(.favoriteButtonTapped(let id))))):
-                state.feeds[id: id]?.isFavorite.toggle()
-                return .none
+                return favoriteButtonTapped(state: &state, id: id)
             case .destination:
                 return .none
             case .binding:
+                return .none
+            case .delegate:
                 return .none
             }
         }
@@ -73,6 +85,12 @@ public struct FeedsListFeature {
             FeedFeature()
         }
         .ifLet(\.$destination, action: \.destination)
+    }
+
+    private func favoriteButtonTapped(state: inout State, id: FeedFeature.State.ID) -> EffectOf<Self> {
+        state.feeds[id: id]?.isFavorite.toggle()
+        guard let feed = state.feeds[id: id] else { return .none }
+        return .send(.delegate(.favoriteStateChanged(feed)))
     }
 }
 

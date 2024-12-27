@@ -16,6 +16,8 @@ public struct AppView: View {
             TabView(selection: $store.tab) {
                 NavigationStack() {
                     FeedsView(store: store.scope(state: \.feedsFeature, action: \.feedsFeature))
+                        .navigationTitle("Feeds")
+                        .navigationBarTitleDisplayMode(.inline)
                 }
                 .tabItem {
                     Text("Feeds tab")
@@ -25,8 +27,9 @@ public struct AppView: View {
                 .tag(AppFeature.Tab.feeds)
 
                 NavigationStack() {
-                    Text("Favorites")
+                    FavoriteFeedsView(store: store.scope(state: \.favoriteFeedsFeature, action: \.favoriteFeedsFeature))
                         .navigationTitle("Favorites")
+                        .navigationBarTitleDisplayMode(.inline)
                 }
                 .tabItem {
                     Text("Favorites tab")

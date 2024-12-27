@@ -15,7 +15,11 @@ public struct FeedsView: View {
                 switch store.viewState {
                 case .feedList:
                     if let store = store.scope(state: \.viewState.feedList, action: \.feedList) {
-                        FeedsListView(store: store)
+                        FeedsListView(store: store) { feedStore in
+                            FeedView(store: feedStore)
+                        } emptyView: {
+                            Text("No feeds yet. Please add one.")
+                        }
                     }
                 case .error(let message):
                     Text(message)
@@ -38,6 +42,9 @@ public struct FeedsView: View {
                         .navigationTitle("New RSS Feed")
                 }
                 .presentationDetents([.height(200)])
+            }
+            .onFirstAppear {
+                send(.onTask)
             }
         }
     }
