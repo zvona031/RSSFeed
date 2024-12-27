@@ -12,6 +12,10 @@ public struct RSSFeedUrlsClient: Sendable {
 }
 
 extension RSSFeedUrlsClient: DependencyKey {
+    public enum RSSFeedUrlsClientError: Error {
+        case itemNotFound
+    }
+
     public static var liveValue: RSSFeedUrlsClient {
         let fileRssFeedUrlsClient = FileRSSFeedURLClient(encoder: JSONEncoder(), decoder: JSONDecoder(), url: .rssFeedUrls)
         return RSSFeedUrlsClient {
@@ -22,16 +26,15 @@ extension RSSFeedUrlsClient: DependencyKey {
             try fileRssFeedUrlsClient.save(feedUrls)
         } delete: { id in
             var feedUrls = try fileRssFeedUrlsClient.load()
-            guard let index = feedUrls.firstIndex(where: { $0.id == id }) else { throw NSError(domain: "", code: 0)}
+            guard let index = feedUrls.firstIndex(where: { $0.id == id }) else { throw RSSFeedUrlsClientError.itemNotFound }
             feedUrls.remove(at: index)
             try fileRssFeedUrlsClient.save(feedUrls)
         } update: { feedModel in
             var feedUrls = try fileRssFeedUrlsClient.load()
-            guard let index = feedUrls.firstIndex(where: { $0.url == feedModel.url }) else { throw NSError(domain: "", code: 0)}
+            guard let index = feedUrls.firstIndex(where: { $0.url == feedModel.url }) else { throw RSSFeedUrlsClientError.itemNotFound }
             feedUrls[index] = feedModel
             try fileRssFeedUrlsClient.save(feedUrls)
         }
-
     }
 }
 
