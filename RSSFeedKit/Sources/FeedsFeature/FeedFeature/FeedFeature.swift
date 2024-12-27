@@ -47,6 +47,7 @@ public struct FeedFeature: Sendable {
             case itemTapped(RSSFeed, Bool)
             case removeButtonTapped
             case favoriteButtonTapped
+            case itemUpdated(ViewState)
         }
     }
 
@@ -71,11 +72,11 @@ public struct FeedFeature: Sendable {
             case .rssFeedResponse(.success(let rssFeed)):
                 state.isRequestInFlight = false
                 state.viewState = .content(rssFeed)
-                return .none
+                return .send(.delegate(.itemUpdated(state.viewState)))
             case .rssFeedResponse(.failure):
                 state.isRequestInFlight = false
                 state.viewState = .error
-                return .none
+                return .send(.delegate(.itemUpdated(state.viewState)))
             case .delegate:
                 return .none
             }
