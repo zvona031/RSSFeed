@@ -12,7 +12,7 @@ public struct AppView: View {
     public var body: some View {
         WithPerceptionTracking {
             TabView(selection: $store.tab) {
-                NavigationStack() {
+                NavigationStack {
                     AllFeedsView(store: store.scope(state: \.feeds, action: \.feeds))
                         .navigationTitle("Feeds")
                         .navigationBarTitleDisplayMode(.inline)
@@ -24,7 +24,7 @@ public struct AppView: View {
                 }
                 .tag(AppFeature.Tab.feeds)
 
-                NavigationStack() {
+                NavigationStack {
                     FavoriteFeedsView(store: store.scope(state: \.favoriteFeeds, action: \.favoriteFeeds))
                         .navigationTitle("Favorites")
                         .navigationBarTitleDisplayMode(.inline)

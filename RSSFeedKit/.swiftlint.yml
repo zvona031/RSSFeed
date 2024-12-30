@@ -108,6 +108,8 @@ type_name:
     min_length:
         warning: 4
         error: 4
+    excluded:
+        - 'Tab'
 
 line_length:
   - 192 # warning

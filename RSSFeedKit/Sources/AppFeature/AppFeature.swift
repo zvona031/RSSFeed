@@ -3,7 +3,6 @@ import FeedsFeature
 
 @Reducer
 public struct AppFeature {
-
     public init() {}
 
     @ObservableState
@@ -42,7 +41,7 @@ public struct AppFeature {
             FeedsListFeature()
         }
 
-        Reduce<State, Action> { state, action in
+        Reduce<State, Action> { _, action in
             switch action {
             case .binding:
                 return .none
