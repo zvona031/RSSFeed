@@ -29,21 +29,22 @@ public struct FeedDetailsView: View {
                                 .lineLimit(1)
                                 .truncationMode(.tail)
                                 .padding(.leading, 8)
-                            if !feedItem.description.isEmpty {
-                                Text(feedItem.description)
+                            if let description = feedItem.description, !description.isEmpty {
+                                Text(description)
                                     .font(.body)
                                     .lineLimit(1)
                                     .truncationMode(.tail)
                                     .padding(.leading, 8)
                             }
                         }
+                        // TODO: adjust width behavior when there is not description and title is not wide enough
                         .frame(maxWidth: .infinity)
                     }
                     .padding()
                     .frame(height: 60)
-                    .background(Color.white) // Background color for the item
-                    .cornerRadius(10) // Rounded corners
-                    .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2) // Optional shadow
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
                     .padding()
                     .onTapGesture {
                         send(.itemTapped(feedItem))

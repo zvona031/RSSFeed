@@ -1,25 +1,22 @@
 import Foundation
 
-extension RSSFeed {
-    public struct Item: Identifiable, Sendable {
-        public var id: URL {
-            url
-        }
+extension RSSFeedDTO {
+    public struct ItemDTO {
+        public let url: URL
         public let title: String
         public let description: String?
         public let imageUrl: URL?
-        public let url: URL
 
         public init(
+            url: URL,
             title: String,
             description: String?,
-            imageUrl: URL?,
-            url: URL
+            imageUrl: URL?
         ) {
+            self.url = url
             self.title = title
             self.description = description
             self.imageUrl = imageUrl
-            self.url = url
         }
     }
 }

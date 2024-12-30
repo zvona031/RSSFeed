@@ -2,7 +2,7 @@ import Domain
 import Foundation
 import IdentifiedCollections
 
-class RSSFeedXMLParserDelegate: NSObject, XMLParserDelegate {
+class RSSFeedXMLParser: NSObject, XMLParserDelegate {
     private var feedUrl: URL?
     private var feedName: String?
     private var feedDescription: String?
@@ -12,9 +12,9 @@ class RSSFeedXMLParserDelegate: NSObject, XMLParserDelegate {
 
     private var isParsingItem: Bool = false
     private var currentItem = Item()
-    var items: IdentifiedArrayOf<RSSFeed.Item> = []
+    var items: [RSSFeedDTO.ItemDTO] = []
 
-    func parse(data: Data) throws -> RSSFeed {
+    func parse(data: Data) throws -> RSSFeedDTO {
         let parser = XMLParser(data: data)
         parser.delegate = self
 
@@ -22,7 +22,7 @@ class RSSFeedXMLParserDelegate: NSObject, XMLParserDelegate {
             guard let feedUrl, let feedName, let feedDescription else {
                 throw ParsingError.requiredFieldsMissing
             }
-            return RSSFeed(
+            return RSSFeedDTO(
                 url: feedUrl,
                 name: feedName,
                 description: feedDescription,
@@ -42,9 +42,11 @@ class RSSFeedXMLParserDelegate: NSObject, XMLParserDelegate {
         if currentElement == .item {
             isParsingItem = true
             currentItem.reset()
-        } else if currentElement == .media,
+        } else if currentElement == .mediaThumbnail || currentElement == .mediaContent,
                   let url = attributeDict[Element.url.rawValue] {
             currentItem.imageUrl = URL(string: url)
+        } else {
+            print("Current element is \(elementName)")
         }
     }
 
@@ -90,7 +92,7 @@ class RSSFeedXMLParserDelegate: NSObject, XMLParserDelegate {
     }
 }
 
-extension RSSFeedXMLParserDelegate {
+extension RSSFeedXMLParser {
     private struct Item {
         var url: URL?
         var title: String?
@@ -101,11 +103,12 @@ extension RSSFeedXMLParserDelegate {
             self = Item()
         }
 
-        func toFeedItem() -> RSSFeed.Item? {
+        func toFeedItem() -> RSSFeedDTO.ItemDTO? {
             guard let url,
-                  let title,
-                  let description else { return nil }
-            return RSSFeed.Item(title: title, description: description, imageUrl: imageUrl, url: url)
+                  let title else {
+                return nil
+            }
+            return RSSFeedDTO.ItemDTO(url: url, title: title, description: description, imageUrl: imageUrl)
         }
     }
 
@@ -115,7 +118,8 @@ extension RSSFeedXMLParserDelegate {
         case image
         case url
         case item
-        case media = "media:thumbnail"
+        case mediaThumbnail = "media:thumbnail"
+        case mediaContent = "media:content"
         case link
     }
 
