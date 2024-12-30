@@ -30,6 +30,10 @@ let package = Package(
         .package(
             url: "https://github.com/onevcat/Kingfisher.git",
             from: "8.0.0"
+        ),
+        .package(
+            url: "https://github.com/SimplyDanny/SwiftLintPlugins",
+            exact: "0.57.1"
         )
     ],
     targets: [
@@ -39,7 +43,8 @@ let package = Package(
             name: "Domain",
             dependencies: [
                 .product(name: "IdentifiedCollections", package: "swift-identified-collections")
-            ]
+            ],
+            plugins: [.plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")]
         ),
         .target(
             name: "FeedsFeature",
