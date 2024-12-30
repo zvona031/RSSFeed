@@ -31,8 +31,8 @@ class RSSFeedXMLParserDelegate: NSObject, XMLParserDelegate {
     private var currentElement: String = ""
     private var currentTitle: String = ""
     private var currentDescription: String = ""
-    private var currentImageUrl: URL? = nil
-    private var currentUrl: URL? = nil
+    private var currentImageUrl: URL?
+    private var currentUrl: URL?
     var items: IdentifiedArrayOf<RSSFeed.Item> = []
 
     private var feedName: String = ""

@@ -40,7 +40,7 @@ public struct FeedItemView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 60, height: 60)
-                    
+
                     VStack(alignment: .leading) {
                         Text(rssFeed.name)
                             .font(.headline)
@@ -55,11 +55,11 @@ public struct FeedItemView: View {
                                 .padding(.leading, 8)
                         }
                     }
-                    
+
                     Spacer()
-                    Button(action: {
+                    Button {
                         send(.refreshButtonTapped)
-                    }) {
+                    } label: {
                         if store.isRequestInFlight {
                             ProgressView()
                                 .progressViewStyle(.circular)
@@ -91,7 +91,9 @@ public struct FeedItemView: View {
             .cornerRadius(10)
             .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
             .onTapGesture {
-                guard let rssFeed = store.viewState.content else { return }
+                guard let rssFeed = store.viewState.content else {
+                    return
+                }
                 send(.itemTapped(rssFeed))
             }
         }

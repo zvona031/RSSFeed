@@ -4,7 +4,6 @@ import Foundation
 
 @Reducer
 public struct FeedDetailsFeature {
-
     @Dependency(\.rssFeedUrlsClient) var rssFeedUrlsClient
 
     public init() {}

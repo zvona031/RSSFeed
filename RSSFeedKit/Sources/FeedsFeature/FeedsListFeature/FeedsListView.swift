@@ -33,7 +33,6 @@ public struct FeedsListView<ItemView: View, EmptyView: View>: View {
                     FeedDetailsView(store: store)
                 }
             }
-
         }
     }
 }

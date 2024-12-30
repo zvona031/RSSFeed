@@ -85,7 +85,7 @@ public struct FeedFeature: Sendable {
     }
 
     private func fetchRssFeed(state: inout State) -> EffectOf<Self> {
-        return .run { [url = state.url] send in
+        .run { [url = state.url] send in
             await send(.rssFeedResponse(Result { try await rssFeedClient.get(url: url) }))
         }
     }

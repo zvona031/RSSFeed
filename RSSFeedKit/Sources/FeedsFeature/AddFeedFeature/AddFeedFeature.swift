@@ -44,7 +44,9 @@ public struct AddFeedFeature: Reducer, Sendable {
         BindingReducer()
             .onChange(of: \.rawUrl) { oldValue, newValue in
                 Reduce { state, _ in
-                    guard oldValue != newValue else { return .none }
+                    guard oldValue != newValue else {
+                        return .none
+                    }
                     return validateAddButton(state: &state)
                 }
             }

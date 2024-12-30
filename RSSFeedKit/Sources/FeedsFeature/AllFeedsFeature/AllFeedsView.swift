@@ -49,7 +49,6 @@ public struct AllFeedsView: View {
             .onFirstAppear {
                 send(.onFirstAppear)
             }
-
         }
     }
 }

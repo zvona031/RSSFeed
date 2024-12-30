@@ -52,7 +52,8 @@ let package = Package(
                 "Domain",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 .product(name: "Kingfisher", package: "Kingfisher"),
-            ]
+            ],
+            plugins: [.plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")]
         ),
         .target(
             name: "AppFeature",

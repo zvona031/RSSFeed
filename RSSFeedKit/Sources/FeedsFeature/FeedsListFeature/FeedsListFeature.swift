@@ -4,7 +4,6 @@ import Foundation
 
 @Reducer
 public struct FeedsListFeature {
-
     @Dependency(\.rssFeedUrlsClient.delete) var deleteRssFeedUrl
 
     public init() {}
@@ -43,7 +42,9 @@ public struct FeedsListFeature {
                 state.destination = .alert(.deleteConfirmation(id: id))
                 return .none
             case .feeds(.element(id: let id, action: .delegate(.itemTapped(let feed)))):
-                guard let sharedFeed = Shared(state.$feeds[id: id].projectedValue) else { return .none }
+                guard let sharedFeed = Shared(state.$feeds[id: id].projectedValue) else {
+                    return .none
+                }
 
                 state.destination = .details(FeedDetailsFeature.State(feed: feed, isFavorite: sharedFeed.isFavorite))
                 return .none
@@ -64,7 +65,6 @@ public struct FeedsListFeature {
         }
         .ifLet(\.$destination, action: \.destination)
     }
-
 }
 
 extension FeedsListFeature {

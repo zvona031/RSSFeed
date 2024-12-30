@@ -22,7 +22,7 @@ public struct FeedDetailsView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 60, height: 60)
-                        
+
                         VStack(alignment: .leading) {
                             Text(feedItem.title)
                                 .font(.headline)
@@ -48,7 +48,6 @@ public struct FeedDetailsView: View {
                     .onTapGesture {
                         send(.itemTapped(feedItem))
                     }
-
                 }
             }
             .navigationTitle(store.feed.name)
@@ -69,5 +68,3 @@ public struct FeedDetailsView: View {
         }
     }
 }
-
-

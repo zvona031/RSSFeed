@@ -4,7 +4,6 @@ import Foundation
 
 @Reducer
 public struct AllFeedsFeature {
-
     @Dependency(\.rssFeedUrlsClient) var rssFeedUrlsClient
 
     public init() {}
@@ -66,9 +65,11 @@ public struct AllFeedsFeature {
             case .destination:
                 return .none
             case .feedStateUrlsResponse(.success(let models)):
-                state.$feeds.withLock { $0 = IdentifiedArray(uniqueElements: models.map({ model in
-                    FeedFeature.State(url: model.url, isFavorite: model.isFavorite)
-                })) }
+                state.$feeds.withLock {
+                    $0 = IdentifiedArray(uniqueElements: models.map({ model in
+                        FeedFeature.State(url: model.url, isFavorite: model.isFavorite)
+                    }))
+                }
                 state.viewState = .feedList(FeedsListFeature.State(feeds: state.$feeds))
                 return .none
             case .feedStateUrlsResponse(.failure):

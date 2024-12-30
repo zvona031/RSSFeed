@@ -14,7 +14,9 @@ extension IdentifiedArrayOf<FeedFeature.State> {
                 for element in newFavoriteFeeds {
                     oldFavoriteFeeds.remove(id: element.id)
                 }
-                guard let deletedElement = oldFavoriteFeeds.first else { return }
+                guard let deletedElement = oldFavoriteFeeds.first else {
+                    return
+                }
                 // removing element from the parent array as well
                 self.remove(deletedElement)
             } else {
