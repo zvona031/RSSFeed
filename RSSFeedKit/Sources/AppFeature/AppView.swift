@@ -5,10 +5,8 @@ import FeedsFeature
 public struct AppView: View {
     @Perception.Bindable private var store: StoreOf<AppFeature>
 
-    public init() {
-        self.store = Store(initialState: AppFeature.State(), reducer: {
-            AppFeature()
-        })
+    public init(store: StoreOf<AppFeature>) {
+        self.store = store
     }
 
     public var body: some View {
@@ -40,8 +38,4 @@ public struct AppView: View {
             }
         }
     }
-}
-
-#Preview {
-    AppView()
 }

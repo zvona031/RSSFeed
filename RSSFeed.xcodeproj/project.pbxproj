@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1187968A2D16248A00C450DB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 118796892D16248A00C450DB /* AppFeature */; };
+		119EB21F2D20AD73003F545D /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 119EB21E2D20AD73003F545D /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				119EB21F2D20AD73003F545D /* ComposableArchitecture in Frameworks */,
 				1187968A2D16248A00C450DB /* AppFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,6 +83,7 @@
 			name = RSSFeed;
 			packageProductDependencies = (
 				118796892D16248A00C450DB /* AppFeature */,
+				119EB21E2D20AD73003F545D /* ComposableArchitecture */,
 			);
 			productName = RSSFeed;
 			productReference = 1169216F2D16019E0034E568 /* RSSFeed.app */;
@@ -110,6 +113,9 @@
 			);
 			mainGroup = 116921662D16019E0034E568;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				119EB21D2D20AD73003F545D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 116921702D16019E0034E568 /* Products */;
 			projectDirPath = "";
@@ -349,10 +355,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		119EB21D2D20AD73003F545D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.17.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		118796892D16248A00C450DB /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppFeature;
+		};
+		119EB21E2D20AD73003F545D /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 119EB21D2D20AD73003F545D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

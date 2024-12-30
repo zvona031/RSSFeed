@@ -2,28 +2,30 @@ import ComposableArchitecture
 import FeedsFeature
 
 @Reducer
-struct AppFeature {
+public struct AppFeature {
+
+    public init() {}
 
     @ObservableState
-    struct State {
+    public struct State {
         var tab: Tab
         var feedsFeature: FeedsFeature.State
         var favoriteFeedsFeature: FavoriteFeedsFeature.State
 
-        init(tab: Tab = .feeds) {
+        public init(tab: Tab = .feeds) {
             self.tab = tab
             self.feedsFeature = FeedsFeature.State()
             self.favoriteFeedsFeature = FavoriteFeedsFeature.State()
         }
     }
 
-    enum Action: BindableAction {
+    public enum Action: BindableAction {
         case binding(BindingAction<State>)
         case feedsFeature(FeedsFeature.Action)
         case favoriteFeedsFeature(FavoriteFeedsFeature.Action)
     }
 
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         BindingReducer()
 
         Scope(state: \.feedsFeature, action: \.feedsFeature) {
@@ -60,7 +62,7 @@ struct AppFeature {
 }
 
 extension AppFeature {
-    enum Tab {
+    public enum Tab {
         case feeds
         case favorites
     }
