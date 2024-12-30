@@ -35,8 +35,10 @@ public struct FeedsFeature {
 
         public enum ViewAction {
             case addButtonTapped
-            case onTask
+            case onFirstAppear
         }
+
+        public enum Alert: Sendable {}
     }
 
     public var body: some ReducerOf<Self> {
@@ -44,15 +46,14 @@ public struct FeedsFeature {
 
         Reduce<State, Action> { state, action in
             switch action {
-            case .view(.onTask):
+            case .view(.onFirstAppear):
                 return getRssFeedUrls(state: &state)
             case .view(.addButtonTapped):
                 state.destination = .addFeed(AddFeedFeature.State())
                 return .none
             case .destination(.presented(.addFeed(.delegate(.rssFeedAdded(let url))))):
                 guard !(state.viewState.feedList?.feeds.contains(where: { $0.url == url }) ?? false) else {
-                    // TODO: Add alert that displays that this RSSFeed already exists
-                    state.destination = nil
+                    state.destination = .alert(.feedAlreadyExists)
                     return .none
                 }
                 _ = state.$feeds.withLock { $0.append(FeedFeature.State(url: url, isFavorite: false)) }
@@ -100,5 +101,12 @@ extension FeedsFeature {
     @Reducer
     public enum Destination {
         case addFeed(AddFeedFeature)
+        case alert(AlertState<FeedsFeature.Action.Alert>)
+    }
+}
+
+extension AlertState where Action == FeedsFeature.Action.Alert {
+    static let feedAlreadyExists = AlertState {
+        TextState("Feed with this URL already exists")
     }
 }

@@ -12,6 +12,9 @@ public struct FeedsView: View {
     public var body: some View {
         WithPerceptionTracking {
             VStack {
+//                switch store.case {
+//                    
+//                }
                 switch store.viewState {
                 case .feedList:
                     if let store = store.scope(state: \.viewState.feedList, action: \.feedList) {
@@ -43,9 +46,11 @@ public struct FeedsView: View {
                 }
                 .presentationDetents([.height(200)])
             }
+            .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
             .onFirstAppear {
-                send(.onTask)
+                send(.onFirstAppear)
             }
+
         }
     }
 }
