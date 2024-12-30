@@ -13,24 +13,24 @@ public struct AppView: View {
         WithPerceptionTracking {
             TabView(selection: $store.tab) {
                 NavigationStack() {
-                    FeedsView(store: store.scope(state: \.feedsFeature, action: \.feedsFeature))
+                    FeedsView(store: store.scope(state: \.feeds, action: \.feeds))
                         .navigationTitle("Feeds")
                         .navigationBarTitleDisplayMode(.inline)
                 }
                 .tabItem {
-                    Text("Feeds tab")
+                    Text("Feeds")
                     Image(systemName: "newspaper.fill")
                         .renderingMode(.template)
                 }
                 .tag(AppFeature.Tab.feeds)
 
                 NavigationStack() {
-                    FavoriteFeedsView(store: store.scope(state: \.favoriteFeedsFeature, action: \.favoriteFeedsFeature))
+                    FavoriteFeedsView(store: store.scope(state: \.favoriteFeeds, action: \.favoriteFeeds))
                         .navigationTitle("Favorites")
                         .navigationBarTitleDisplayMode(.inline)
                 }
                 .tabItem {
-                    Text("Favorites tab")
+                    Text("Favorites")
                     Image(systemName: "star.fill")
                         .renderingMode(.template)
                 }

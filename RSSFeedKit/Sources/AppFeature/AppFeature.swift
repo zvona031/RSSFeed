@@ -8,53 +8,47 @@ public struct AppFeature {
 
     @ObservableState
     public struct State {
+        @Shared var feedItems: IdentifiedArrayOf<FeedFeature.State>
         var tab: Tab
-        var feedsFeature: FeedsFeature.State
-        var favoriteFeedsFeature: FavoriteFeedsFeature.State
+        var feeds: FeedsFeature.State
+        var favoriteFeeds: FeedsListFeature.State
 
-        public init(tab: Tab = .feeds) {
+        public init(
+            tab: Tab = .feeds,
+            feedItems: IdentifiedArrayOf<FeedFeature.State> = []
+        ) {
             self.tab = tab
-            self.feedsFeature = FeedsFeature.State()
-            self.favoriteFeedsFeature = FavoriteFeedsFeature.State()
+            let sharedFeedItems = Shared(value: feedItems)
+            self._feedItems = sharedFeedItems
+            self.feeds = FeedsFeature.State(feeds: sharedFeedItems)
+            self.favoriteFeeds = FeedsListFeature.State(feeds: sharedFeedItems.favoriteFeeds)
         }
     }
 
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
-        case feedsFeature(FeedsFeature.Action)
-        case favoriteFeedsFeature(FavoriteFeedsFeature.Action)
+        case feeds(FeedsFeature.Action)
+        case favoriteFeeds(FeedsListFeature.Action)
     }
 
     public var body: some ReducerOf<Self> {
         BindingReducer()
 
-        Scope(state: \.feedsFeature, action: \.feedsFeature) {
+        Scope(state: \.feeds, action: \.feeds) {
             FeedsFeature()
         }
 
-        Scope(state: \.favoriteFeedsFeature, action: \.favoriteFeedsFeature) {
-            FavoriteFeedsFeature()
+        Scope(state: \.favoriteFeeds, action: \.favoriteFeeds) {
+            FeedsListFeature()
         }
 
         Reduce<State, Action> { state, action in
             switch action {
             case .binding:
                 return .none
-            case .feedsFeature(.delegate(.favoriteStateChanged(let feedState))):
-                return FavoriteFeedsFeature().reduce(into: &state.favoriteFeedsFeature, action: .favoriteStateChanged(feedState))
-                    .map(Action.favoriteFeedsFeature)
-            case .feedsFeature(.delegate(.feedStateChanged(let viewState, let id))):
-                return FavoriteFeedsFeature().reduce(into: &state.favoriteFeedsFeature, action: .feedStateChanged(viewState, id))
-                    .map(Action.favoriteFeedsFeature)
-            case .favoriteFeedsFeature(.delegate(.favoriteStateChanged(let feedState))):
-                return FeedsFeature().reduce(into: &state.feedsFeature, action: .favoriteStateChanged(feedState.id))
-                    .map(Action.feedsFeature)
-            case .favoriteFeedsFeature(.delegate(.feedStateChanged(let viewState, let id))):
-                return FeedsFeature().reduce(into: &state.feedsFeature, action: .feedStateChanged(viewState, id))
-                    .map(Action.feedsFeature)
-            case .feedsFeature:
+            case .feeds:
                 return .none
-            case .favoriteFeedsFeature:
+            case .favoriteFeeds:
                 return .none
             }
         }

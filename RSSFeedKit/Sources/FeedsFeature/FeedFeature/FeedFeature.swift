@@ -5,9 +5,10 @@ import Foundation
 @Reducer
 public struct FeedFeature: Sendable {
     @Dependency(\.rssFeedClient) var rssFeedClient
+    @Dependency(\.rssFeedUrlsClient) var rssFeedUrlsClient
 
     @ObservableState
-    public struct State: Identifiable {
+    public struct State: Identifiable, Sendable {
         public var id: URL {
             url
         }
@@ -44,10 +45,8 @@ public struct FeedFeature: Sendable {
         }
 
         public enum Delegate {
-            case itemTapped(RSSFeed, Bool)
+            case itemTapped(RSSFeed)
             case removeButtonTapped
-            case favoriteButtonTapped
-            case itemUpdated(ViewState)
         }
     }
 
@@ -64,19 +63,21 @@ public struct FeedFeature: Sendable {
                 state.isRequestInFlight = true
                 return fetchRssFeed(state: &state)
             case .view(.itemTapped(let rssFeed)):
-                return .send(.delegate(.itemTapped(rssFeed, state.isFavorite)))
+                return .send(.delegate(.itemTapped(rssFeed)))
             case .view(.removeButtonTapped):
                 return .send(.delegate(.removeButtonTapped))
             case .view(.favoriteButtonTapped):
-                return .send(.delegate(.favoriteButtonTapped))
+                state.isFavorite.toggle()
+                try? rssFeedUrlsClient.update(RSSFeedModel(url: state.url, isFavorite: state.isFavorite))
+                return .none
             case .rssFeedResponse(.success(let rssFeed)):
                 state.isRequestInFlight = false
                 state.viewState = .content(rssFeed)
-                return .send(.delegate(.itemUpdated(state.viewState)))
+                return .none
             case .rssFeedResponse(.failure):
                 state.isRequestInFlight = false
                 state.viewState = .error
-                return .send(.delegate(.itemUpdated(state.viewState)))
+                return .none
             case .delegate:
                 return .none
             }
@@ -93,7 +94,7 @@ public struct FeedFeature: Sendable {
 extension FeedFeature {
     @CasePathable
     @dynamicMemberLookup
-    public enum ViewState {
+    public enum ViewState: Sendable {
         case content(RSSFeed)
         case error
         case loading

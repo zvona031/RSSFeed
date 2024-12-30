@@ -4,32 +4,29 @@ import Domain
 @Reducer
 public struct FeedDetailsFeature {
 
+    @Dependency(\.rssFeedUrlsClient) var rssFeedUrlsClient
+
     public init() {}
 
     @ObservableState
     public struct State {
         let feed: RSSFeed
-        var isFavorite: Bool
+        @Shared var isFavorite: Bool
 
         public init(
             feed: RSSFeed,
-            isFavorite: Bool
+            isFavorite: Shared<Bool>
         ) {
             self.feed = feed
-            self.isFavorite = isFavorite
+            self._isFavorite = isFavorite
         }
     }
 
     public enum Action: ViewAction {
         case view(View)
-        case delegate(Delegate)
 
         public enum View {
             case favoriteButtonTapped
-        }
-
-        public enum Delegate {
-            case favoriteButtonTapped(RSSFeed.ID)
         }
     }
 
@@ -37,9 +34,8 @@ public struct FeedDetailsFeature {
         Reduce { state, action in
             switch action {
             case .view(.favoriteButtonTapped):
-                state.isFavorite.toggle()
-                return .send(.delegate(.favoriteButtonTapped(state.feed.id)))
-            case .delegate:
+                state.$isFavorite.withLock { $0.toggle() }
+                try? rssFeedUrlsClient.update(RSSFeedModel(url: state.feed.url, isFavorite: state.isFavorite))
                 return .none
             }
         }
