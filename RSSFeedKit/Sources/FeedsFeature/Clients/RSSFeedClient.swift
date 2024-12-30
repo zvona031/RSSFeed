@@ -11,8 +11,9 @@ struct RSSFeedClient: Sendable {
 
 extension RSSFeedClient: DependencyKey {
     static let liveValue = RSSFeedClient { url in
+        @Dependency(\.urlSession) var urlSession
         let parser = RSSFeedXMLParserDelegate(url: url)
-        let data = try await URLSession.shared.data(from: url)
+        let data = try await urlSession.data(from: url)
         let rssFeed = try parser.parse(data: data.0, url: url)
         return rssFeed
     }
