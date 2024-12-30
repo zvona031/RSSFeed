@@ -3,24 +3,24 @@ import Foundation
 
 @Reducer
 public struct AddFeedFeature: Reducer, Sendable {
+    @Dependency(\.urlValidationClient) var urlValidationClient
     @Dependency(\.dismiss) var dismiss
 
     @ObservableState
     public struct State: Sendable {
         var rawUrl: String
-        var destination: Destination?
-        var addButtonEnabled: Bool
+        var errorMessage: String?
+        var addButtonDisabled: Bool
         var focus: Field?
 
         public init(
             rawUrl: String = "",
-            destination: Destination? = nil,
-            addButtonEnabled: Bool = false,
+            errorMessage: String? = nil,
+            addButtonDisabled: Bool = true,
             focus: Field? = .url
         ) {
             self.rawUrl = rawUrl
-            self.destination = destination
-            self.addButtonEnabled = addButtonEnabled
+            self.addButtonDisabled = addButtonDisabled
             self.focus = focus
         }
     }
@@ -42,6 +42,12 @@ public struct AddFeedFeature: Reducer, Sendable {
 
     public var body: some ReducerOf<Self> {
         BindingReducer()
+            .onChange(of: \.rawUrl) { oldValue, newValue in
+                Reduce { state, _ in
+                    guard oldValue != newValue else { return .none }
+                    return validateAddButton(state: &state)
+                }
+            }
 
         Reduce<State, Action> { state, action in
             switch action {
@@ -52,7 +58,6 @@ public struct AddFeedFeature: Reducer, Sendable {
             case .view(.addButtonTapped):
                 state.focus = nil
                 guard let url = URL(string: state.rawUrl) else {
-                    // TODO: add alert for invalid URL
                     return .none
                 }
                 return .run { send in
@@ -65,19 +70,15 @@ public struct AddFeedFeature: Reducer, Sendable {
             }
         }
     }
+
+    private func validateAddButton(state: inout State) -> EffectOf<Self> {
+        state.errorMessage = urlValidationClient.isValid(url: state.rawUrl) ? nil : "Please enter a valid URL"
+        state.addButtonDisabled = state.errorMessage != nil
+        return .none
+    }
 }
 
 extension AddFeedFeature {
-    @Reducer
-    public enum Destination: Sendable {
-        case alert(AlertState<Alert>)
-
-        public enum Alert: Sendable {
-            case success
-            case error
-        }
-    }
-
     public enum Field: Sendable {
         case url
     }

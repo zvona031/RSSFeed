@@ -8,22 +8,31 @@ public struct AddFeedView: View {
 
     public var body: some View {
         WithPerceptionTracking {
-            TextField("RSS Feed URL", text: $store.rawUrl)
-                .focused($focus, equals: .url)
-                .padding()
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Add") {
-                            send(.addButtonTapped)
-                        }
+            VStack(alignment: .leading) {
+                RoundedTextField("RSS Feed URL", text: $store.rawUrl)
+                    .focused($focus, equals: .url)
+                
+                if let errorMessage = store.errorMessage {
+                    Text(errorMessage)
+                        .font(.system(size: 12))
+                        .foregroundStyle(.red)
+                }
+            }
+            .padding(.horizontal, 10)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Add") {
+                        send(.addButtonTapped)
                     }
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button("Cancel") {
-                            send(.cancelButtonTapped)
-                        }
+                    .disabled(store.addButtonDisabled)
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        send(.cancelButtonTapped)
                     }
                 }
-                .bind($store.focus, to: $focus)
+            }
+            .bind($store.focus, to: $focus)
         }
     }
 }
