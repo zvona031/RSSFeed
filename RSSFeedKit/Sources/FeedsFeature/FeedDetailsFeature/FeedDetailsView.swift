@@ -4,7 +4,7 @@ import SwiftUI
 
 @ViewAction(for: FeedDetailsFeature.self)
 public struct FeedDetailsView: View {
-    public let store: StoreOf<FeedDetailsFeature>
+    @Perception.Bindable public var store: StoreOf<FeedDetailsFeature>
 
     public init(store: StoreOf<FeedDetailsFeature>) {
         self.store = store
@@ -45,6 +45,9 @@ public struct FeedDetailsView: View {
                     .cornerRadius(10) // Rounded corners
                     .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2) // Optional shadow
                     .padding()
+                    .onTapGesture {
+                        send(.itemTapped(feedItem))
+                    }
 
                 }
             }
@@ -58,6 +61,13 @@ public struct FeedDetailsView: View {
                     }
                 }
             }
+            .sheet(item: $store.scope(state: \.destination?.webView, action: \.destination.webView)) { store in
+                store.withState { url in
+                    WebView(url: url)
+                }
+            }
         }
     }
 }
+
+
