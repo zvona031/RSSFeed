@@ -9,7 +9,7 @@ struct FeedView: View {
         WithPerceptionTracking {
             FeedItemView(store: store)
                 .onFirstAppear {
-                    send(.onTask)
+                    send(.onFirstAppear)
                 }
         }
     }

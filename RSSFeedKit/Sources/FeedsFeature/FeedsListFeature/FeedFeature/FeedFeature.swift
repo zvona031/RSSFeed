@@ -41,7 +41,7 @@ public struct FeedFeature: Sendable {
             case removeButtonTapped
             case favoriteButtonTapped
             case itemTapped(RSSFeed)
-            case onTask
+            case onFirstAppear
         }
 
         public enum Delegate {
@@ -53,7 +53,7 @@ public struct FeedFeature: Sendable {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .view(.onTask):
+            case .view(.onFirstAppear):
                 state.viewState = .loading
                 return fetchRssFeed(state: &state)
             case .view(.retryButtonTapped):

@@ -3,7 +3,7 @@ import Domain
 import Foundation
 
 @Reducer
-public struct FeedsFeature {
+public struct AllFeedsFeature {
 
     @Dependency(\.rssFeedUrlsClient) var rssFeedUrlsClient
 
@@ -36,6 +36,7 @@ public struct FeedsFeature {
         public enum ViewAction {
             case addButtonTapped
             case onFirstAppear
+            case retryButtonTapped
         }
 
         public enum Alert: Sendable {}
@@ -47,6 +48,8 @@ public struct FeedsFeature {
         Reduce<State, Action> { state, action in
             switch action {
             case .view(.onFirstAppear):
+                return getRssFeedUrls(state: &state)
+            case .view(.retryButtonTapped):
                 return getRssFeedUrls(state: &state)
             case .view(.addButtonTapped):
                 state.destination = .addFeed(AddFeedFeature.State())
@@ -89,7 +92,7 @@ public struct FeedsFeature {
     }
 }
 
-extension FeedsFeature {
+extension AllFeedsFeature {
     @CasePathable
     @dynamicMemberLookup
     public enum ViewState {
@@ -101,11 +104,11 @@ extension FeedsFeature {
     @Reducer
     public enum Destination {
         case addFeed(AddFeedFeature)
-        case alert(AlertState<FeedsFeature.Action.Alert>)
+        case alert(AlertState<AllFeedsFeature.Action.Alert>)
     }
 }
 
-extension AlertState where Action == FeedsFeature.Action.Alert {
+extension AlertState where Action == AllFeedsFeature.Action.Alert {
     static let feedAlreadyExists = AlertState {
         TextState("Feed with this URL already exists")
     }

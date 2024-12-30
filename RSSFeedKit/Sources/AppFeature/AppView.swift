@@ -13,7 +13,7 @@ public struct AppView: View {
         WithPerceptionTracking {
             TabView(selection: $store.tab) {
                 NavigationStack() {
-                    FeedsView(store: store.scope(state: \.feeds, action: \.feeds))
+                    AllFeedsView(store: store.scope(state: \.feeds, action: \.feeds))
                         .navigationTitle("Feeds")
                         .navigationBarTitleDisplayMode(.inline)
                 }

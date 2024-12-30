@@ -1,20 +1,17 @@
 import ComposableArchitecture
 import SwiftUI
 
-@ViewAction(for: FeedsFeature.self)
-public struct FeedsView: View {
-    @Perception.Bindable public var store: StoreOf<FeedsFeature>
+@ViewAction(for: AllFeedsFeature.self)
+public struct AllFeedsView: View {
+    @Perception.Bindable public var store: StoreOf<AllFeedsFeature>
 
-    public init(store: StoreOf<FeedsFeature>) {
+    public init(store: StoreOf<AllFeedsFeature>) {
         self.store = store
     }
 
     public var body: some View {
         WithPerceptionTracking {
             VStack {
-//                switch store.case {
-//                    
-//                }
                 switch store.viewState {
                 case .feedList:
                     if let store = store.scope(state: \.viewState.feedList, action: \.feedList) {
@@ -25,7 +22,9 @@ public struct FeedsView: View {
                         }
                     }
                 case .error(let message):
-                    Text(message)
+                    Button(message) {
+                        send(.retryButtonTapped)
+                    }
                 case .loading:
                     ProgressView()
                         .progressViewStyle(.circular)

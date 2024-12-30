@@ -10,7 +10,7 @@ public struct AppFeature {
     public struct State {
         @Shared var feedItems: IdentifiedArrayOf<FeedFeature.State>
         var tab: Tab
-        var feeds: FeedsFeature.State
+        var feeds: AllFeedsFeature.State
         var favoriteFeeds: FeedsListFeature.State
 
         public init(
@@ -20,14 +20,14 @@ public struct AppFeature {
             self.tab = tab
             let sharedFeedItems = Shared(value: feedItems)
             self._feedItems = sharedFeedItems
-            self.feeds = FeedsFeature.State(feeds: sharedFeedItems)
+            self.feeds = AllFeedsFeature.State(feeds: sharedFeedItems)
             self.favoriteFeeds = FeedsListFeature.State(feeds: sharedFeedItems.favoriteFeeds)
         }
     }
 
     public enum Action: BindableAction {
         case binding(BindingAction<State>)
-        case feeds(FeedsFeature.Action)
+        case feeds(AllFeedsFeature.Action)
         case favoriteFeeds(FeedsListFeature.Action)
     }
 
@@ -35,7 +35,7 @@ public struct AppFeature {
         BindingReducer()
 
         Scope(state: \.feeds, action: \.feeds) {
-            FeedsFeature()
+            AllFeedsFeature()
         }
 
         Scope(state: \.favoriteFeeds, action: \.favoriteFeeds) {

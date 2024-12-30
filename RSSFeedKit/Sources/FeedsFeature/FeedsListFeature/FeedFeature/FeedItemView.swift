@@ -87,9 +87,9 @@ public struct FeedItemView: View {
             .frame(maxWidth: .infinity)
             .frame(height: 60)
             .padding()
-            .background(Color.white) // Background color for the item
-            .cornerRadius(10) // Rounded corners
-            .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2) // Optional shadow
+            .background(Color.white)
+            .cornerRadius(10)
+            .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
             .onTapGesture {
                 guard let rssFeed = store.viewState.content else { return }
                 send(.itemTapped(rssFeed))
