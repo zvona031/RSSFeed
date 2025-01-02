@@ -53,7 +53,7 @@ public struct FeedView: View {
                 }
             }
             .frame(height: 60)
-            .padding()
+            .padding(6)
             .roundedShadow()
             .onTapGesture {
                 guard let rssFeed = store.viewState.content else {

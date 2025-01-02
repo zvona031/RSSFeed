@@ -17,7 +17,8 @@ public struct FeedItemsListView: View {
                     ItemView(url: feedItem.imageUrl, title: feedItem.title, description: feedItem.description)
                         .padding(4)
                         .roundedShadow()
-                        .padding()
+                        .padding(.horizontal)
+                        .padding(.vertical, 4)
                         .onTapGesture {
                             send(.itemTapped(feedItem))
                         }

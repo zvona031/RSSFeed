@@ -18,6 +18,7 @@ struct AsyncImage: View {
                     didFailToLoad = true
                 })
                 .aspectRatio(contentMode: .fit)
+                .clipShape(.rect(cornerRadius: 4))
         } else {
             Color.gray.opacity(0.6)
                 .clipShape(.rect(cornerRadius: 4))

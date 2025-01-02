@@ -25,7 +25,8 @@ public struct FeedsListView<ItemView: View, EmptyView: View>: View {
                 ScrollView {
                     ForEach(store.scope(state: \.feeds, action: \.feeds)) { feedStore in
                         itemView(feedStore)
-                            .padding()
+                            .padding(.horizontal)
+                            .padding(.vertical, 4)
                     }
                 }
                 .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
