@@ -24,53 +24,23 @@ public struct FeedItemView: View {
                         .truncationMode(.tail)
                         .padding(.leading, 8)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    Spacer()
-                    ProgressView()
-                        .progressViewStyle(.circular)
+                        .layoutPriority(1)
+
+                    CircularProgressView()
                 case .error:
                     Button("Retry") {
                         send(.retryButtonTapped)
                     }
-                    Spacer()
+                    .frame(maxWidth: .infinity)
+                    .layoutPriority(1)
                 case .content(let rssFeed):
-                    KFImage(rssFeed.imageUrl)
-                        .placeholder {
-                            Color.gray.cornerRadius(5)
-                        }
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 60, height: 60)
+                    ItemView(url: rssFeed.imageUrl, title: rssFeed.name, description: rssFeed.description)
 
-                    VStack(alignment: .leading) {
-                        Text(rssFeed.name)
-                            .font(.headline)
-                            .lineLimit(1)
-                            .truncationMode(.tail)
-                            .padding(.leading, 8)
-                        if !rssFeed.description.isEmpty {
-                            Text(rssFeed.description)
-                                .font(.body)
-                                .lineLimit(1)
-                                .truncationMode(.tail)
-                                .padding(.leading, 8)
-                        }
-                    }
-
-                    Spacer()
-                    Button {
+                    LoadableButton(isRequestInFlight: store.isRequestInFlight) {
                         send(.refreshButtonTapped)
-                    } label: {
-                        if store.isRequestInFlight {
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                        } else {
-                            Image(systemName: "arrow.clockwise")
-                                .foregroundColor(.blue)
-                                .frame(width: 24, height: 24)
-                        }
                     }
-                    .disabled(store.isRequestInFlight)
                 }
+
                 Button {
                     send(.favoriteButtonTapped)
                 } label: {
@@ -84,12 +54,9 @@ public struct FeedItemView: View {
                         .frame(width: 24, height: 24)
                 }
             }
-            .frame(maxWidth: .infinity)
             .frame(height: 60)
             .padding()
-            .background(Color.white)
-            .cornerRadius(10)
-            .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+            .roundedShadow()
             .onTapGesture {
                 guard let rssFeed = store.viewState.content else {
                     return

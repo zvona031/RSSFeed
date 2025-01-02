@@ -26,8 +26,7 @@ public struct AllFeedsView: View {
                         send(.retryButtonTapped)
                     }
                 case .loading:
-                    ProgressView()
-                        .progressViewStyle(.circular)
+                    CircularProgressView()
                 }
             }
             .toolbar {

@@ -14,37 +14,9 @@ public struct FeedDetailsView: View {
         WithPerceptionTracking {
             ScrollView {
                 ForEach(store.feed.items) { feedItem in
-                    HStack {
-                        KFImage(feedItem.imageUrl)
-                            .placeholder {
-                                Color.gray.cornerRadius(5)
-                            }
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 60, height: 60)
-
-                        VStack(alignment: .leading) {
-                            Text(feedItem.title)
-                                .font(.headline)
-                                .lineLimit(1)
-                                .truncationMode(.tail)
-                                .padding(.leading, 8)
-                            if let description = feedItem.description, !description.isEmpty {
-                                Text(description)
-                                    .font(.body)
-                                    .lineLimit(1)
-                                    .truncationMode(.tail)
-                                    .padding(.leading, 8)
-                            }
-                        }
-                        // TODO: adjust width behavior when there is not description and title is not wide enough
-                        .frame(maxWidth: .infinity)
-                    }
-                    .padding()
-                    .frame(height: 60)
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+                    ItemView(url: feedItem.imageUrl, title: feedItem.title, description: feedItem.description)
+                    .padding(4)
+                    .roundedShadow()
                     .padding()
                     .onTapGesture {
                         send(.itemTapped(feedItem))
