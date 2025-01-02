@@ -119,7 +119,13 @@ class RSSFeedParser: XMLFeedParser {
             guard let description else {
                 throw ParsingError.missingFeedDescription
             }
-            return RSSFeedDTO(url: url, name: title, description: description, imageUrl: imageUrl, items: items)
+            return RSSFeedDTO(
+                url: url,
+                name: title.trimmingCharacters(in: .whitespacesAndNewlines),
+                description: description.trimmingCharacters(in: .whitespacesAndNewlines),
+                imageUrl: imageUrl,
+                items: items
+            )
         }
 
         mutating func reset() {
@@ -127,7 +133,7 @@ class RSSFeedParser: XMLFeedParser {
         }
     }
 
-    private enum ParsingError: Error {
+    enum ParsingError: Error {
         case missingFeedUrl
         case missingFeedTitle
         case missingFeedDescription

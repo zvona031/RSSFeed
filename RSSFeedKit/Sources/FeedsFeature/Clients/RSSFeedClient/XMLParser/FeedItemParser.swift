@@ -85,7 +85,12 @@ class FeedItemParser: XMLFeedParser {
             guard let title else {
                 throw ParsingError.missingItemTitle
             }
-            return RSSFeedDTO.ItemDTO(url: url, title: title, description: description, imageUrl: imageUrl)
+            return RSSFeedDTO.ItemDTO(
+                url: url,
+                title: title.trimmingCharacters(in: .whitespacesAndNewlines),
+                description: description?.trimmingCharacters(in: .whitespacesAndNewlines),
+                imageUrl: imageUrl
+            )
         }
     }
 
