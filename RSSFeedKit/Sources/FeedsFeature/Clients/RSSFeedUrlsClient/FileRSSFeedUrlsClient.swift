@@ -24,7 +24,7 @@ struct FileRSSFeedURLClient {
             return []
         }
         let data = try dataClient.load(url: url)
-        let reminders = try? decoder.decode([RSSFeedModel].self, from: data)
-        return reminders ?? []
+        let reminders = try decoder.decode([RSSFeedModel].self, from: data)
+        return reminders
     }
 }

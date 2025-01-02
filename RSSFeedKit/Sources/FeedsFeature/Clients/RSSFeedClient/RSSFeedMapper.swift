@@ -10,7 +10,8 @@ struct RSSFeedMapper {
 
 extension RSSFeedMapper: DependencyKey {
     static let liveValue = RSSFeedMapper { data in
-        let parser = RSSFeedXMLParser()
+        let feedParser = RSSFeedParser(itemXmlParser: FeedItemParser(), imageXmlParser: FeedImageParser())
+        let parser = RSSFeedXMLParser(feedParser: feedParser)
         let feedDto = try parser.parse(data: data)
         return RSSFeed(feedDto)
     }
