@@ -17,6 +17,9 @@ public struct AllFeedsView: View {
                     if let store = store.scope(state: \.viewState.feedList, action: \.feedList) {
                         FeedsListView(store: store) { feedStore in
                             FeedView(store: feedStore)
+                                .onFirstAppear {
+                                    feedStore.send(.view(.onFirstAppear))
+                                }
                         } emptyView: {
                             Text("No feeds yet. Please add one.")
                         }

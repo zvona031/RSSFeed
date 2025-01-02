@@ -2,11 +2,11 @@ import ComposableArchitecture
 import Kingfisher
 import SwiftUI
 
-@ViewAction(for: FeedDetailsFeature.self)
-public struct FeedDetailsView: View {
-    @Perception.Bindable public var store: StoreOf<FeedDetailsFeature>
+@ViewAction(for: FeedItemsListFeature.self)
+public struct FeedItemsListView: View {
+    @Perception.Bindable public var store: StoreOf<FeedItemsListFeature>
 
-    public init(store: StoreOf<FeedDetailsFeature>) {
+    public init(store: StoreOf<FeedItemsListFeature>) {
         self.store = store
     }
 
@@ -15,12 +15,12 @@ public struct FeedDetailsView: View {
             ScrollView {
                 ForEach(store.feed.items) { feedItem in
                     ItemView(url: feedItem.imageUrl, title: feedItem.title, description: feedItem.description)
-                    .padding(4)
-                    .roundedShadow()
-                    .padding()
-                    .onTapGesture {
-                        send(.itemTapped(feedItem))
-                    }
+                        .padding(4)
+                        .roundedShadow()
+                        .padding()
+                        .onTapGesture {
+                            send(.itemTapped(feedItem))
+                        }
                 }
             }
             .navigationTitle(store.feed.name)

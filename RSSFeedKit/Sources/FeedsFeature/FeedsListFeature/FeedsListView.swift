@@ -4,8 +4,8 @@ import SwiftUI
 @ViewAction(for: FeedsListFeature.self)
 public struct FeedsListView<ItemView: View, EmptyView: View>: View {
     @Perception.Bindable public var store: StoreOf<FeedsListFeature>
-    @ViewBuilder private let itemView: (StoreOf<FeedFeature>) -> ItemView
-    @ViewBuilder private let emptyView: () -> EmptyView
+    private let itemView: (StoreOf<FeedFeature>) -> ItemView
+    private let emptyView: () -> EmptyView
 
     public init(
         store: StoreOf<FeedsListFeature>,
@@ -30,7 +30,7 @@ public struct FeedsListView<ItemView: View, EmptyView: View>: View {
                 }
                 .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
                 .navigationDestination(item: $store.scope(state: \.destination?.details, action: \.destination.details)) { store in
-                    FeedDetailsView(store: store)
+                    FeedItemsListView(store: store)
                 }
             }
         }

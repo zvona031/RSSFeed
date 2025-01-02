@@ -46,7 +46,7 @@ public struct FeedsListFeature {
                     return .none
                 }
 
-                state.destination = .details(FeedDetailsFeature.State(feed: feed, isFavorite: sharedFeed.isFavorite))
+                state.destination = .details(FeedItemsListFeature.State(feed: feed, isFavorite: sharedFeed.isFavorite))
                 return .none
             case .feeds:
                 return .none
@@ -71,7 +71,7 @@ extension FeedsListFeature {
     @Reducer
     public enum Destination {
         case alert(AlertState<FeedsListFeature.Action.Alert>)
-        case details(FeedDetailsFeature)
+        case details(FeedItemsListFeature)
     }
 }
 

@@ -11,7 +11,7 @@ public struct FavoriteFeedsView: View {
     public var body: some View {
         WithPerceptionTracking {
             FeedsListView(store: store) { feedStore in
-                FeedItemView(store: feedStore)
+                FeedView(store: feedStore)
             } emptyView: {
                 Text("No favorite feeds added.")
             }

@@ -3,7 +3,7 @@ import Domain
 import Foundation
 
 @Reducer
-public struct FeedDetailsFeature {
+public struct FeedItemsListFeature {
     @Dependency(\.rssFeedUrlsClient) var rssFeedUrlsClient
 
     public init() {}
@@ -56,7 +56,7 @@ public struct FeedDetailsFeature {
     }
 }
 
-extension FeedDetailsFeature {
+extension FeedItemsListFeature {
     @Reducer
     public enum Destination {
         @ReducerCaseIgnored
