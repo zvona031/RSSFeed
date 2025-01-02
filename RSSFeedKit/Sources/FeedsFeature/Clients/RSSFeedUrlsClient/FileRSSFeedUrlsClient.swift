@@ -1,6 +1,5 @@
 import Foundation
 import Dependencies
-import Domain
 
 struct FileRSSFeedURLClient {
     private let encoder: JSONEncoder

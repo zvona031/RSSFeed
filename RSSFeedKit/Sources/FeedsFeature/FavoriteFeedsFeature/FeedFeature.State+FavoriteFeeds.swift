@@ -1,5 +1,4 @@
 import ComposableArchitecture
-import Domain
 import Foundation
 
 extension IdentifiedArrayOf<FeedFeature.State> {

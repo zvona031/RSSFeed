@@ -1,5 +1,4 @@
 import ComposableArchitecture
-import Domain
 import Foundation
 
 @Reducer
@@ -98,7 +97,6 @@ public struct AllFeedsFeature {
         } catch {
             print("Failed to save feed with id: \(model.id): \(error.localizedDescription)")
         }
-
     }
 }
 
