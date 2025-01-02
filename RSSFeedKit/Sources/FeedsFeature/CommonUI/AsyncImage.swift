@@ -24,5 +24,4 @@ struct AsyncImage: View {
                 .clipShape(.rect(cornerRadius: 4))
         }
     }
-
 }

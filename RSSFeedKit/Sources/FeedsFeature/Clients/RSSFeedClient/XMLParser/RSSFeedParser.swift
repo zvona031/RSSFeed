@@ -36,7 +36,9 @@ class RSSFeedParser: XMLFeedParser {
     }
 
     func foundCharacters(string: String) {
-        guard let currentElement else { return }
+        guard let currentElement else {
+            return
+        }
         let trimmedString = string.trimmingCharacters(in: .newlines)
 
         switch currentElement {
@@ -66,7 +68,9 @@ class RSSFeedParser: XMLFeedParser {
     }
 
     func didEndElement(elementName: String) {
-        guard let endElement = Element(rawValue: elementName) else { return }
+        guard let endElement = Element(rawValue: elementName) else {
+            return
+        }
 
         switch endElement {
         case .image:

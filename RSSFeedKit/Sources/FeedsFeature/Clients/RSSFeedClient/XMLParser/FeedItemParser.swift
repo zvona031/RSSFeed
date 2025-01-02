@@ -14,7 +14,9 @@ class FeedItemParser: XMLFeedParser {
 
     func didStartElement(elementName: String, attributes attributeDict: [String: String]) {
         currentElement = Element(rawValue: elementName)
-        guard let currentElement else { return }
+        guard let currentElement else {
+            return
+        }
 
         switch currentElement {
         case .mediaThumbnail:
@@ -27,7 +29,9 @@ class FeedItemParser: XMLFeedParser {
     }
     
     func foundCharacters(string: String) {
-        guard let currentElement else { return }
+        guard let currentElement else {
+            return
+        }
         switch currentElement {
         case .title:
             if item.title == nil {

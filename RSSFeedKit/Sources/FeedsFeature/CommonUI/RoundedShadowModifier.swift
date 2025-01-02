@@ -1,7 +1,6 @@
 import SwiftUI
 
 public struct RoundedShadowModifier: ViewModifier {
-
     public init() {}
 
     public func body(content: Content) -> some View {

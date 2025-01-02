@@ -15,12 +15,14 @@ class FeedImageParser: XMLFeedParser {
         return url
     }
 
-    func didStartElement(elementName: String, attributes attributeDict: [String : String]) {
+    func didStartElement(elementName: String, attributes attributeDict: [String: String]) {
         currentElement = Element(rawValue: elementName)
     }
     
     func foundCharacters(string: String) {
-        guard let currentElement else { return }
+        guard let currentElement else {
+            return
+        }
         switch currentElement {
         case .url:
             guard url == nil else { break }
