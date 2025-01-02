@@ -1,7 +1,7 @@
 import Foundation
 
 extension RSSFeedDTO {
-    public struct ItemDTO {
+    public struct ItemDTO: Equatable {
         public let url: URL
         public let title: String
         public let description: String?

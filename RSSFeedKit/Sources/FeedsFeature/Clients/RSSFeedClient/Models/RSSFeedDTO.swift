@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RSSFeedDTO {
+public struct RSSFeedDTO: Equatable {
     public let url: URL
     public let name: String
     public let description: String
