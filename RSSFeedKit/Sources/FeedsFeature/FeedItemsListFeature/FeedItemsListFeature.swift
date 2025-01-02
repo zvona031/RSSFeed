@@ -41,7 +41,7 @@ public struct FeedItemsListFeature {
             switch action {
             case .view(.favoriteButtonTapped):
                 state.$isFavorite.withLock { $0.toggle() }
-                try? rssFeedUrlsClient.update(RSSFeedModel(url: state.feed.url, isFavorite: state.isFavorite))
+                updateFeed(model: RSSFeedModel(url: state.feed.url, isFavorite: state.isFavorite))
                 return .none
             case .view(.itemTapped(let item)):
                 state.destination = .webView(url: item.url)
@@ -53,6 +53,14 @@ public struct FeedItemsListFeature {
             }
         }
         .ifLet(\.$destination, action: \.destination)
+    }
+
+    private func updateFeed(model: RSSFeedModel) {
+        do {
+            try rssFeedUrlsClient.update(model)
+        } catch {
+            print("Failed to update feed with id \(model.id): \(error.localizedDescription)")
+        }
     }
 }
 

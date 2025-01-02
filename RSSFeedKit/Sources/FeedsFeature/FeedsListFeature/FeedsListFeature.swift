@@ -52,7 +52,7 @@ public struct FeedsListFeature {
                 return .none
             case .destination(.presented(.alert(.removeConfirmation(let id)))):
                 _ = state.$feeds.withLock { $0.remove(id: id) }
-                try? deleteRssFeedUrl(id)
+                deleteFeed(id: id)
                 return .none
             case .destination:
                 return .none
@@ -64,6 +64,14 @@ public struct FeedsListFeature {
             FeedFeature()
         }
         .ifLet(\.$destination, action: \.destination)
+    }
+
+    private func deleteFeed(id: FeedFeature.State.ID) {
+        do {
+            try deleteRssFeedUrl(id)
+        } catch {
+            print("Failed to delete feed with id \(id): \(error)")
+        }
     }
 }
 

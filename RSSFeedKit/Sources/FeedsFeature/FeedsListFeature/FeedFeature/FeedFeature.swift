@@ -68,7 +68,7 @@ public struct FeedFeature: Sendable {
                 return .send(.delegate(.removeButtonTapped))
             case .view(.favoriteButtonTapped):
                 state.isFavorite.toggle()
-                try? rssFeedUrlsClient.update(RSSFeedModel(url: state.url, isFavorite: state.isFavorite))
+                updateFeed(model: RSSFeedModel(url: state.url, isFavorite: state.isFavorite))
                 return .none
             case .rssFeedResponse(.success(let rssFeed)):
                 state.isRequestInFlight = false
@@ -87,6 +87,14 @@ public struct FeedFeature: Sendable {
     private func fetchRssFeed(state: inout State) -> EffectOf<Self> {
         .run { [url = state.url] send in
             await send(.rssFeedResponse(Result { try await rssFeedClient.get(url: url) }))
+        }
+    }
+
+    private func updateFeed(model: RSSFeedModel) {
+        do {
+            try rssFeedUrlsClient.update(model)
+        } catch {
+            print("Failed to update feed with id \(model.id): \(error.localizedDescription)")
         }
     }
 }

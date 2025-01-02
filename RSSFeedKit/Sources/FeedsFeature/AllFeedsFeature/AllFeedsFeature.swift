@@ -60,7 +60,7 @@ public struct AllFeedsFeature {
                 }
                 _ = state.$feeds.withLock { $0.append(FeedFeature.State(url: url, isFavorite: false)) }
                 state.destination = nil
-                try? rssFeedUrlsClient.save(RSSFeedModel(url: url, isFavorite: false))
+                saveFeed(model: RSSFeedModel(url: url, isFavorite: false))
                 return .none
             case .destination:
                 return .none
@@ -90,6 +90,15 @@ public struct AllFeedsFeature {
     private func getRssFeedUrls(state: inout State) -> EffectOf<Self> {
         state.viewState = .loading
         return .send(.feedStateUrlsResponse(Result { try rssFeedUrlsClient.get() }))
+    }
+
+    private func saveFeed(model: RSSFeedModel) {
+        do {
+            try rssFeedUrlsClient.save(model)
+        } catch {
+            print("Failed to save feed with id: \(model.id): \(error.localizedDescription)")
+        }
+
     }
 }
 
