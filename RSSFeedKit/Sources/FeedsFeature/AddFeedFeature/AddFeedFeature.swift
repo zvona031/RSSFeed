@@ -7,7 +7,7 @@ public struct AddFeedFeature: Reducer, Sendable {
     @Dependency(\.dismiss) var dismiss
 
     @ObservableState
-    public struct State: Sendable {
+    public struct State: Sendable, Equatable {
         var rawUrl: String
         var errorMessage: String?
         var addButtonDisabled: Bool
@@ -81,7 +81,7 @@ public struct AddFeedFeature: Reducer, Sendable {
 }
 
 extension AddFeedFeature {
-    public enum Field: Sendable {
+    public enum Field: Sendable, Equatable {
         case url
     }
 }

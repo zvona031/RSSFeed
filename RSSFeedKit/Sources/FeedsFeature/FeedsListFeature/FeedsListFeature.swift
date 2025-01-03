@@ -8,7 +8,7 @@ public struct FeedsListFeature {
     public init() {}
 
     @ObservableState
-    public struct State {
+    public struct State: Equatable {
         @Shared var feeds: IdentifiedArrayOf<FeedFeature.State>
         @Presents var destination: Destination.State?
 
@@ -29,7 +29,7 @@ public struct FeedsListFeature {
 
         public enum ViewAction {}
 
-        public enum Alert {
+        public enum Alert: Equatable {
             case removeConfirmation(FeedFeature.State.ID)
         }
     }
@@ -75,7 +75,7 @@ public struct FeedsListFeature {
 }
 
 extension FeedsListFeature {
-    @Reducer
+    @Reducer(state: .equatable)
     public enum Destination {
         case alert(AlertState<FeedsListFeature.Action.Alert>)
         case details(FeedItemsListFeature)

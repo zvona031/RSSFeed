@@ -1,7 +1,7 @@
 import Foundation
 import IdentifiedCollections
 
-public struct RSSFeed: Identifiable, Sendable {
+public struct RSSFeed: Identifiable, Sendable, Equatable {
     public var id: URL {
         url
     }

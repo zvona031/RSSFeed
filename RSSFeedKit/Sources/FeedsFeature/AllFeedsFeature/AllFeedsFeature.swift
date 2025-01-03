@@ -8,7 +8,7 @@ public struct AllFeedsFeature {
     public init() {}
 
     @ObservableState
-    public struct State {
+    public struct State: Equatable {
         var viewState: ViewState
         @Shared var feeds: IdentifiedArrayOf<FeedFeature.State>
         @Presents var destination: Destination.State?
@@ -37,7 +37,7 @@ public struct AllFeedsFeature {
             case retryButtonTapped
         }
 
-        public enum Alert: Sendable {}
+        public enum Alert: Sendable, Equatable {}
     }
 
     public var body: some ReducerOf<Self> {
@@ -103,13 +103,13 @@ public struct AllFeedsFeature {
 extension AllFeedsFeature {
     @CasePathable
     @dynamicMemberLookup
-    public enum ViewState {
+    public enum ViewState: Equatable {
         case feedList(FeedsListFeature.State)
         case error(String)
         case loading
     }
 
-    @Reducer
+    @Reducer(state: .equatable)
     public enum Destination {
         case addFeed(AddFeedFeature)
         case alert(AlertState<AllFeedsFeature.Action.Alert>)

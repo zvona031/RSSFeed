@@ -7,7 +7,7 @@ public struct FeedFeature: Sendable {
     @Dependency(\.rssFeedUrlsClient) var rssFeedUrlsClient
 
     @ObservableState
-    public struct State: Identifiable, Sendable {
+    public struct State: Identifiable, Sendable, Equatable {
         public var id: URL {
             url
         }
@@ -101,7 +101,7 @@ public struct FeedFeature: Sendable {
 extension FeedFeature {
     @CasePathable
     @dynamicMemberLookup
-    public enum ViewState: Sendable {
+    public enum ViewState: Sendable, Equatable {
         case content(RSSFeed)
         case error
         case loading

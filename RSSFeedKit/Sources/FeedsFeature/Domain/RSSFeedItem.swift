@@ -1,7 +1,7 @@
 import Foundation
 
 extension RSSFeed {
-    public struct Item: Identifiable, Sendable {
+    public struct Item: Identifiable, Sendable, Equatable {
         public var id: URL {
             url
         }

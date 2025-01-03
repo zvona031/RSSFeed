@@ -8,7 +8,7 @@ public struct FeedItemsListFeature {
     public init() {}
 
     @ObservableState
-    public struct State {
+    public struct State: Equatable {
         let feed: RSSFeed
         @Shared var isFavorite: Bool
         @Presents var destination: Destination.State?
@@ -64,7 +64,7 @@ public struct FeedItemsListFeature {
 }
 
 extension FeedItemsListFeature {
-    @Reducer
+    @Reducer(state: .equatable)
     public enum Destination {
         @ReducerCaseIgnored
         case webView(url: URL)
