@@ -29,6 +29,6 @@ extension DataClient: DependencyKey {
 extension DependencyValues {
     var dataClient: DataClient {
         get { self[DataClient.self] }
-        set { self[DataClient.self] = newValue}
+        set { self[DataClient.self] = newValue }
     }
 }
