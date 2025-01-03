@@ -24,8 +24,8 @@ public struct AllFeedsView: View {
                             Text("No feeds yet. Please add one.")
                         }
                     }
-                case .error(let message):
-                    Button(message) {
+                case .error:
+                    Button("Error") {
                         send(.retryButtonTapped)
                     }
                 case .loading:

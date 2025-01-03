@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RSSFeedModel: Codable, Identifiable {
+public struct RSSFeedModel: Codable, Identifiable, Sendable {
     public var id: URL {
         url
     }

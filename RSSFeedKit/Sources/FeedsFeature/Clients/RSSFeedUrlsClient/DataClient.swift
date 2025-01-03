@@ -17,6 +17,13 @@ extension DataClient: DependencyKey {
     } fileExists: { path in
         FileManager.default.fileExists(atPath: path)
     }
+
+    static let testValue = DataClient { _, _ in
+    } load: { _ in
+        Data("".utf8)
+    } fileExists: { _ in
+        true
+    }
 }
 
 extension DependencyValues {

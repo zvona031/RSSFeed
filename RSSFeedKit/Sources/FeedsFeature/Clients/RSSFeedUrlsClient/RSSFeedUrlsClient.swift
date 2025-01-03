@@ -15,7 +15,7 @@ extension RSSFeedUrlsClient: DependencyKey {
         case itemNotFound
     }
 
-    public static var liveValue: RSSFeedUrlsClient {
+    public static let liveValue = {
         let fileRssFeedUrlsClient = FileRSSFeedURLClient(encoder: JSONEncoder(), decoder: JSONDecoder(), url: .rssFeedUrls)
         return RSSFeedUrlsClient {
             try fileRssFeedUrlsClient.load()
@@ -34,6 +34,13 @@ extension RSSFeedUrlsClient: DependencyKey {
             feedUrls[index] = feedModel
             try fileRssFeedUrlsClient.save(feedUrls)
         }
+    }()
+
+    public static let testValue = RSSFeedUrlsClient {
+        []
+    } save: { _ in
+    } delete: { _ in
+    } update: { _ in
     }
 }
 

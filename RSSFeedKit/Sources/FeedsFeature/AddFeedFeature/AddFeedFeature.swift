@@ -30,11 +30,13 @@ public struct AddFeedFeature: Reducer, Sendable {
         case view(View)
         case delegate(Delegate)
 
+        @CasePathable
         public enum View: Sendable {
             case cancelButtonTapped
             case addButtonTapped
         }
 
+        @CasePathable
         public enum Delegate: Sendable {
             case rssFeedAdded(URL)
         }

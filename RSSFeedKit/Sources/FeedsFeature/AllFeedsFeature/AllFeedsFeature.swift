@@ -31,6 +31,8 @@ public struct AllFeedsFeature {
         case feedList(FeedsListFeature.Action)
         case feedStateUrlsResponse(Result<[RSSFeedModel], Error>)
 
+        @CasePathable
+        @dynamicMemberLookup
         public enum ViewAction {
             case addButtonTapped
             case onFirstAppear
@@ -72,7 +74,7 @@ public struct AllFeedsFeature {
                 state.viewState = .feedList(FeedsListFeature.State(feeds: state.$feeds))
                 return .none
             case .feedStateUrlsResponse(.failure):
-                state.viewState = .error("Error")
+                state.viewState = .error
                 return .none
             case .feedList:
                 return .none
@@ -105,7 +107,7 @@ extension AllFeedsFeature {
     @dynamicMemberLookup
     public enum ViewState: Equatable {
         case feedList(FeedsListFeature.State)
-        case error(String)
+        case error
         case loading
     }
 
