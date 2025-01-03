@@ -1,9 +1,11 @@
 import ComposableArchitecture
 import Foundation
+import BackgroundTasks
 
 @Reducer
 public struct AllFeedsFeature {
     @Dependency(\.rssFeedUrlsClient) var rssFeedUrlsClient
+    @Dependency(\.backgroundTaskClient) var backgroundTaskClient
 
     public init() {}
 

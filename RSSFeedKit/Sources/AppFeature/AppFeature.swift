@@ -9,13 +9,16 @@ public struct AppFeature {
     public struct State {
         @Shared var feedItems: IdentifiedArrayOf<FeedFeature.State>
         var tab: Tab
+        var appDelegate: AppDelegate.State
         var feeds: AllFeedsFeature.State
         var favoriteFeeds: FeedsListFeature.State
 
         public init(
             tab: Tab = .feeds,
-            feedItems: IdentifiedArrayOf<FeedFeature.State> = []
+            feedItems: IdentifiedArrayOf<FeedFeature.State> = [],
+            appDelegate: AppDelegate.State = AppDelegate.State()
         ) {
+            self.appDelegate = appDelegate
             self.tab = tab
             let sharedFeedItems = Shared(value: feedItems)
             self._feedItems = sharedFeedItems
@@ -28,10 +31,15 @@ public struct AppFeature {
         case binding(BindingAction<State>)
         case feeds(AllFeedsFeature.Action)
         case favoriteFeeds(FeedsListFeature.Action)
+        case appDelegate(AppDelegate.Action)
     }
 
     public var body: some ReducerOf<Self> {
         BindingReducer()
+
+        Scope(state: \.appDelegate, action: \.appDelegate) {
+            AppDelegate()
+        }
 
         Scope(state: \.feeds, action: \.feeds) {
             AllFeedsFeature()
@@ -43,6 +51,8 @@ public struct AppFeature {
 
         Reduce<State, Action> { _, action in
             switch action {
+            case .appDelegate:
+                return .none
             case .binding:
                 return .none
             case .feeds:
