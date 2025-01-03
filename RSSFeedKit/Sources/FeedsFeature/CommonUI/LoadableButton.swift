@@ -1,10 +1,10 @@
 import SwiftUI
 
-public struct LoadableButton: View {
+struct LoadableButton: View {
     private let isRequestInFlight: Bool
     private let action: () -> Void
 
-    public init(
+    init(
         isRequestInFlight: Bool,
         action: @escaping () -> Void
     ) {
@@ -12,7 +12,7 @@ public struct LoadableButton: View {
         self.action = action
     }
 
-    public var body: some View {
+    var body: some View {
         Button {
             action()
         } label: {

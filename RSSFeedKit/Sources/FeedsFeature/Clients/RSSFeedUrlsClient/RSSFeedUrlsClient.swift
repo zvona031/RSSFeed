@@ -3,19 +3,19 @@ import Dependencies
 import Foundation
 
 @DependencyClient
-public struct RSSFeedUrlsClient: Sendable {
-    public var get: @Sendable () throws -> [RSSFeedModel]
-    public var save: @Sendable (RSSFeedModel) throws -> Void
-    public var delete: @Sendable (RSSFeedModel.ID) throws -> Void
-    public var update: @Sendable (RSSFeedModel) throws -> Void
+struct RSSFeedUrlsClient: Sendable {
+    var get: @Sendable () throws -> [RSSFeedModel]
+    var save: @Sendable (RSSFeedModel) throws -> Void
+    var delete: @Sendable (RSSFeedModel.ID) throws -> Void
+    var update: @Sendable (RSSFeedModel) throws -> Void
 }
 
 extension RSSFeedUrlsClient: DependencyKey {
-    public enum RSSFeedUrlsClientError: Error {
+    enum RSSFeedUrlsClientError: Error {
         case itemNotFound
     }
 
-    public static let liveValue = {
+    static let liveValue = {
         let fileRssFeedUrlsClient = FileRSSFeedURLClient(encoder: JSONEncoder(), decoder: JSONDecoder(), url: .rssFeedUrls)
         return RSSFeedUrlsClient {
             try fileRssFeedUrlsClient.load()
@@ -36,7 +36,7 @@ extension RSSFeedUrlsClient: DependencyKey {
         }
     }()
 
-    public static let testValue = RSSFeedUrlsClient {
+    static let testValue = RSSFeedUrlsClient {
         []
     } save: { _ in
     } delete: { _ in
@@ -45,7 +45,7 @@ extension RSSFeedUrlsClient: DependencyKey {
 }
 
 extension DependencyValues {
-    public var rssFeedUrlsClient: RSSFeedUrlsClient {
+    var rssFeedUrlsClient: RSSFeedUrlsClient {
         get { self[RSSFeedUrlsClient.self] }
         set { self[RSSFeedUrlsClient.self] = newValue}
     }

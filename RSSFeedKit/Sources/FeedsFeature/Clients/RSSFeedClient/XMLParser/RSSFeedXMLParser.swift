@@ -1,7 +1,7 @@
 import Foundation
 
 class RSSFeedXMLParser: NSObject, XMLParserDelegate {
-    let feedParser: RSSFeedParser
+    private let feedParser: RSSFeedParser
 
     init(feedParser: RSSFeedParser) {
         self.feedParser = feedParser

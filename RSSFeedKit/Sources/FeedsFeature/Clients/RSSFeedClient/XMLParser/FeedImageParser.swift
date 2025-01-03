@@ -2,7 +2,7 @@ import Foundation
 
 class FeedImageParser: XMLFeedParser {
     private var currentElement: Element?
-    var url: URL?
+    private var url: URL?
 
     func parse() throws -> URL {
         defer {

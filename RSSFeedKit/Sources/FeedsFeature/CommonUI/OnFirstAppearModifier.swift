@@ -1,14 +1,14 @@
 import SwiftUI
 
-public struct OnFirstAppearModifier: ViewModifier {
+struct OnFirstAppearModifier: ViewModifier {
     private let onFirstAppearAction: () -> Void
     @State private var hasAppeared = false
 
-    public init(_ onFirstAppearAction: @escaping () -> Void) {
+    init(_ onFirstAppearAction: @escaping () -> Void) {
         self.onFirstAppearAction = onFirstAppearAction
     }
 
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         content
             .onAppear {
                 guard !hasAppeared else {
@@ -20,7 +20,7 @@ public struct OnFirstAppearModifier: ViewModifier {
     }
 }
 
-public extension View {
+extension View {
     func onFirstAppear(_ onFirstAppearAction: @escaping () -> Void) -> some View {
         modifier(OnFirstAppearModifier(onFirstAppearAction))
     }

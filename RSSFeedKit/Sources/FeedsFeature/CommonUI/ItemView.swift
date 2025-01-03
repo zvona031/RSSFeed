@@ -1,12 +1,12 @@
 import SwiftUI
 import Foundation
 
-public struct ItemView: View {
+struct ItemView: View {
     private let url: URL?
     private let title: String
     private let description: String?
 
-    public init(
+    init(
         url: URL?,
         title: String,
         description: String?
@@ -16,7 +16,7 @@ public struct ItemView: View {
         self.description = description
     }
 
-    public var body: some View {
+    var body: some View {
         HStack {
             AsyncImage(url: url)
                 .frame(width: 60, height: 60)
