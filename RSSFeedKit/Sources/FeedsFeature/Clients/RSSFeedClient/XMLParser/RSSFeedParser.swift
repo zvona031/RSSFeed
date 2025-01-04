@@ -60,8 +60,8 @@ class RSSFeedParser: XMLFeedParser {
             }
         case .link:
             guard let url = URL(string: trimmedString),
-                  rssFeed.url == nil else { break }
-            rssFeed.url = url
+                  rssFeed.websiteUrl == nil else { break }
+            rssFeed.websiteUrl = url
         default:
             break
         }
@@ -103,14 +103,14 @@ class RSSFeedParser: XMLFeedParser {
     }
 
     private struct RSSFeed {
-        var url: URL?
+        var websiteUrl: URL?
         var title: String?
         var description: String?
         var imageUrl: URL?
         var items: [RSSFeedDTO.ItemDTO] = []
 
         func toRSSFeedDTO() throws -> RSSFeedDTO {
-            guard let url else {
+            guard let websiteUrl else {
                 throw ParsingError.missingFeedUrl
             }
             guard let title else {
@@ -120,7 +120,7 @@ class RSSFeedParser: XMLFeedParser {
                 throw ParsingError.missingFeedDescription
             }
             return RSSFeedDTO(
-                url: url,
+                websiteUrl: websiteUrl,
                 name: title.trimmingCharacters(in: .whitespacesAndNewlines),
                 description: description.trimmingCharacters(in: .whitespacesAndNewlines),
                 imageUrl: imageUrl,

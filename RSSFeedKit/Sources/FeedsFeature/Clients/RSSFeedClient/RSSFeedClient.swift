@@ -13,7 +13,7 @@ extension RSSFeedClient: DependencyKey {
         @Dependency(\.urlSession) var urlSession
         @Dependency(\.rssFeedMapper) var mapper
         let data = try await urlSession.data(from: url)
-        return try mapper.map(data.0)
+        return try mapper.map(data.0, url)
     }
 }
 

@@ -4,15 +4,15 @@ import Foundation
 import IdentifiedCollections
 
 struct RSSFeedMapper {
-    var map: @Sendable (Data) throws -> RSSFeed
+    var map: @Sendable (Data, URL) throws -> RSSFeed
 }
 
 extension RSSFeedMapper: DependencyKey {
-    static let liveValue = RSSFeedMapper { data in
+    static let liveValue = RSSFeedMapper { data, url in
         let feedParser = RSSFeedParser(itemXmlParser: FeedItemParser(), imageXmlParser: FeedImageParser())
         let parser = RSSFeedXMLParser(feedParser: feedParser)
         let feedDto = try parser.parse(data: data)
-        return RSSFeed(feedDto)
+        return RSSFeed(feedDto, url: url)
     }
 }
 
@@ -35,9 +35,10 @@ fileprivate extension RSSFeed.Item {
 }
 
 fileprivate extension RSSFeed {
-    init(_ feedDto: RSSFeedDTO) {
+    init(_ feedDto: RSSFeedDTO, url: URL) {
         self.init(
-            url: feedDto.url,
+            url: url,
+            websiteUrl: feedDto.websiteUrl,
             name: feedDto.name,
             description: feedDto.description,
             imageUrl: feedDto.imageUrl,

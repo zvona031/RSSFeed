@@ -6,6 +6,7 @@ public struct RSSFeed: Identifiable, Sendable, Equatable {
         url
     }
     public let url: URL
+    public let websiteUrl: URL
     public let name: String
     public let description: String
     public let imageUrl: URL?
@@ -13,12 +14,14 @@ public struct RSSFeed: Identifiable, Sendable, Equatable {
 
     public init(
         url: URL,
+        websiteUrl: URL,
         name: String,
         description: String,
         imageUrl: URL?,
         items: IdentifiedArrayOf<Item>
     ) {
         self.url = url
+        self.websiteUrl = websiteUrl
         self.name = name
         self.description = description
         self.imageUrl = imageUrl
