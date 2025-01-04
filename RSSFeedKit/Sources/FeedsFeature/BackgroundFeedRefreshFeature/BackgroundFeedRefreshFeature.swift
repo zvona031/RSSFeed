@@ -67,8 +67,7 @@ public struct BackgroundFeedRefreshFeature {
     private func handleFeedRefresh(state: inout State, freshFeeds: [Result<RSSFeed, Error>]) -> EffectOf<Self> {
         let successFeeds = freshFeeds.compactMap { try? $0.get() }
         for feed in successFeeds {
-            guard let oldFeedId = state.feeds.first(where: { $0.viewState.content?.id == feed.id })?.id,
-                  let oldFeed = state.feeds[id: oldFeedId]?.viewState.content,
+            guard let oldFeed = state.feeds[id: feed.id]?.viewState.content,
                   let newestOldItem = oldFeed.items.first,
                   let newestItem = feed.items.first,
                   newestItem.id != newestOldItem.id
@@ -77,10 +76,11 @@ public struct BackgroundFeedRefreshFeature {
                 continue
             }
             state.$feeds.withLock { feeds in
-                feeds[id: oldFeedId]?.viewState.modify(\.content, yield: { $0 = feed })
+                feeds[id: feed.id]?.viewState.modify(\.content, yield: { $0 = feed })
             }
         }
         state.appRefreshTask?.setTaskCompleted(success: true)
+        state.appRefreshTask = nil
         print("Background app refresh completed successfully")
         return .none
     }
