@@ -25,28 +25,36 @@ public struct BackgroundFeedRefreshFeature {
         case scheduleTask
         case onTaskTriggered(BGTask)
         case onFeedsResponse([Result<RSSFeed, Error>])
+        case observeFeatureAllowed
+        case featureAllowedChanged(Bool)
     }
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .observeFeatureAllowed:
+                return .publisher {
+                    state.$backgroundFeedUpdateAllowed.publisher
+                        .map(Action.featureAllowedChanged)
+                }
+            case .featureAllowedChanged(let allowed):
+                return featureAllowedChanged(state: &state)
             case .scheduleTask:
                 return scheduleBackgroundFeedRefreshTask(state: &state)
             case .onTaskTriggered(let task):
-                guard let appRefreshTask = task as? BGAppRefreshTask,
-                    !state.feeds.isEmpty
-                else {
-                    task.setTaskCompleted(success: true)
-                    return .none
-                }
-                state.appRefreshTask = appRefreshTask
-                return .run { [urls = state.feeds.map { $0.url }, feedsRefreshClient] send in
-                    let results = await feedsRefreshClient.refreshFeeds(for: urls)
-                    await send(.onFeedsResponse(results))
-                }
+                return handleTaskTriggered(state: &state, task: task)
             case let .onFeedsResponse(results):
                 return handleFeedRefresh(state: &state, freshFeeds: results)
             }
+        }
+    }
+
+    private func featureAllowedChanged(state: inout State) -> EffectOf<Self> {
+        if state.backgroundFeedUpdateAllowed {
+            return scheduleBackgroundFeedRefreshTask(state: &state)
+        } else {
+            backgroundTaskClient.cancel(id: BGTaskIdentifiers.feedRefresh.rawValue)
+            return .none
         }
     }
 
@@ -62,6 +70,20 @@ public struct BackgroundFeedRefreshFeature {
             print("Failed to schedule background refresh task: \(error.localizedDescription)")
         }
         return .none
+    }
+
+    private func handleTaskTriggered(state: inout State, task: BGTask) -> EffectOf<Self> {
+        guard let appRefreshTask = task as? BGAppRefreshTask,
+            !state.feeds.isEmpty
+        else {
+            task.setTaskCompleted(success: true)
+            return .none
+        }
+        state.appRefreshTask = appRefreshTask
+        return .run { [urls = state.feeds.map { $0.url }, feedsRefreshClient] send in
+            let results = await feedsRefreshClient.refreshFeeds(for: urls)
+            await send(.onFeedsResponse(results))
+        }
     }
 
     private func handleFeedRefresh(state: inout State, freshFeeds: [Result<RSSFeed, Error>]) -> EffectOf<Self> {

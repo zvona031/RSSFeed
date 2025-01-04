@@ -28,7 +28,10 @@ public struct AppDelegate {
         Reduce<State, Action> { state, action in
             switch action {
             case .didFinishLaunching:
-                return scheduleBackgroundFeedRefresh(state: &state)
+                return .merge(
+                    scheduleBackgroundFeedRefresh(state: &state),
+                    observeBackgroundFeedRefreshFeatureAllowed(state: &state)
+                )
             case .backgroundFeedRefresh:
                 return .none
             }
@@ -37,6 +40,11 @@ public struct AppDelegate {
 
     private func scheduleBackgroundFeedRefresh(state: inout State) -> EffectOf<Self> {
         BackgroundFeedRefreshFeature().reduce(into: &state.backgroundFeedRefresh, action: .scheduleTask)
+            .map(Action.backgroundFeedRefresh)
+    }
+
+    private func observeBackgroundFeedRefreshFeatureAllowed(state: inout State) -> EffectOf<Self> {
+        BackgroundFeedRefreshFeature().reduce(into: &state.backgroundFeedRefresh, action: .observeFeatureAllowed)
             .map(Action.backgroundFeedRefresh)
     }
 }

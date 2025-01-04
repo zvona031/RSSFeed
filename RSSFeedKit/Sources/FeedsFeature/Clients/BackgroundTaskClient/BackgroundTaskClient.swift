@@ -7,6 +7,7 @@ import BackgroundTasks
 public struct BackgroundTaskClient: Sendable {
     public var schedule: @Sendable (_ id: String, _ beginDate: Date) throws -> Void
     public var handleBackgroundTask: @Sendable (_ id: String, @escaping (BGTask) -> Void) -> Void
+    public var cancel: @Sendable (_ id: String) -> Void
 }
 
 extension BackgroundTaskClient: DependencyKey {
@@ -18,6 +19,8 @@ extension BackgroundTaskClient: DependencyKey {
         BGTaskScheduler.shared.register(forTaskWithIdentifier: id, using: nil) { task in
             action(task)
         }
+    } cancel: { id in
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: id)
     }
 }
 
