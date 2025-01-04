@@ -6,7 +6,7 @@ import BackgroundTasks
 @DependencyClient
 public struct BackgroundTaskClient: Sendable {
     public var schedule: @Sendable (_ id: String, _ beginDate: Date) throws -> Void
-    public var handleBackgroundTask: @Sendable (_ id: String, @escaping (BGAppRefreshTask) -> Void) -> Void
+    public var handleBackgroundTask: @Sendable (_ id: String, @escaping (BGTask) -> Void) -> Void
 }
 
 extension BackgroundTaskClient: DependencyKey {
@@ -16,8 +16,7 @@ extension BackgroundTaskClient: DependencyKey {
         try BGTaskScheduler.shared.submit(request)
     } handleBackgroundTask: { id, action in
         BGTaskScheduler.shared.register(forTaskWithIdentifier: id, using: nil) { task in
-            guard let appRefreshTask = task as? BGAppRefreshTask else { return }
-            action(appRefreshTask)
+            action(task)
         }
     }
 }

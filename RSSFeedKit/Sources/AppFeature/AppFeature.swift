@@ -15,15 +15,14 @@ public struct AppFeature {
 
         public init(
             tab: Tab = .feeds,
-            feedItems: IdentifiedArrayOf<FeedFeature.State> = [],
-            appDelegate: AppDelegate.State = AppDelegate.State()
+            feedItems: IdentifiedArrayOf<FeedFeature.State> = []
         ) {
-            self.appDelegate = appDelegate
             self.tab = tab
             let sharedFeedItems = Shared(value: feedItems)
             self._feedItems = sharedFeedItems
             self.feeds = AllFeedsFeature.State(feeds: sharedFeedItems)
             self.favoriteFeeds = FeedsListFeature.State(feeds: sharedFeedItems.favoriteFeeds)
+            self.appDelegate = AppDelegate.State(backgroundFeedRefresh: BackgroundFeedRefreshFeature.State(feeds: sharedFeedItems))
         }
     }
 

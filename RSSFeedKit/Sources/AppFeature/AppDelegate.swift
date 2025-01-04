@@ -1,52 +1,42 @@
 import ComposableArchitecture
 import FeedsFeature
 import Foundation
+import BackgroundTasks
 
 @Reducer
 public struct AppDelegate {
-    @Dependency(\.backgroundTaskClient) var backgroundTaskClient
-    @Shared(.appStorage("backgroundFeedUpdateAllowed")) var backgroundFeedUpdateAllowed = false
-
     public init() {}
 
     public struct State {
-        public init() {}
+        var backgroundFeedRefresh: BackgroundFeedRefreshFeature.State
+        
+        public init(backgroundFeedRefresh: BackgroundFeedRefreshFeature.State) {
+            self.backgroundFeedRefresh = backgroundFeedRefresh
+        }
     }
 
     public enum Action {
         case didFinishLaunching
+        case backgroundFeedRefresh(BackgroundFeedRefreshFeature.Action)
     }
 
     public var body: some ReducerOf<Self> {
-        Reduce { _, action in
+        Scope(state: \.backgroundFeedRefresh, action: \.backgroundFeedRefresh) {
+            BackgroundFeedRefreshFeature()
+        }
+
+        Reduce<State, Action> { state, action in
             switch action {
             case .didFinishLaunching:
-                return .concatenate(
-                    handleBackgroundTask(),
-                    scheduleBackgroundFeedRefreshTask()
-                )
+                return scheduleBackgroundFeedRefresh(state: &state)
+            case .backgroundFeedRefresh:
+                return .none
             }
         }
     }
 
-    private func scheduleBackgroundFeedRefreshTask() -> EffectOf<Self> {
-        guard backgroundFeedUpdateAllowed else {
-            return .none
-        }
-        let beginDate = Date(timeIntervalSinceNow: 30 * 30)
-        do {
-            try backgroundTaskClient.schedule(id: BGTaskIdentifiers.feedRefresh.rawValue, beginDate: beginDate)
-        } catch {
-            print("Failed to schedule background refresh task: \(error.localizedDescription)")
-        }
-        return .none
-    }
-
-    private func handleBackgroundTask() -> EffectOf<Self> {
-        backgroundTaskClient.handleBackgroundTask(id: BGTaskIdentifiers.feedRefresh.rawValue) { task in
-            // TODO: implement background task handler
-            task.setTaskCompleted(success: true)
-        }
-        return .none
+    private func scheduleBackgroundFeedRefresh(state: inout State) -> EffectOf<Self> {
+        BackgroundFeedRefreshFeature().reduce(into: &state.backgroundFeedRefresh, action: .scheduleTask)
+            .map(Action.backgroundFeedRefresh)
     }
 }

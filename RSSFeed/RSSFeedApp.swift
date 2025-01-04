@@ -1,6 +1,7 @@
 import SwiftUI
 import AppFeature
 import ComposableArchitecture
+import BackgroundTasks
 
 @main
 struct RSSFeedApp: App {
@@ -14,16 +15,26 @@ struct RSSFeedApp: App {
 }
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
+    @Dependency(\.backgroundTaskClient) var backgroundTaskClient
+
     let store = Store(initialState: AppFeature.State()) {
         AppFeature()
     }
 
     func application(
       _ application: UIApplication,
-      // swiftlint:disable:next discouraged_optional_collection
       didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        handleBackgroundFeedRefresh()
         store.send(.appDelegate(.didFinishLaunching))
-      return true
+        return true
+    }
+
+    private func handleBackgroundFeedRefresh() {
+        backgroundTaskClient.handleBackgroundTask(id: "com.zvonimirpavlovic.RSSFeed.feedrefresh") { [weak self] task in
+            Task { @MainActor in
+                self?.store.send(.appDelegate(.backgroundFeedRefresh(.onTaskTriggered(task))))
+            }
+        }
     }
 }
