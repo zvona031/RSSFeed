@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 import AppFeature
-import FeedsFeature
+import Clients
 
 final class SceneDelegate: NSObject, UIApplicationDelegate, UIWindowSceneDelegate {
     @Dependency(\.backgroundTaskClient) var backgroundTaskClient
@@ -20,7 +20,7 @@ final class SceneDelegate: NSObject, UIApplicationDelegate, UIWindowSceneDelegat
     }
 
     private func handleBackgroundFeedRefresh() {
-        backgroundTaskClient.handleBackgroundTask(id: "com.zvonimirpavlovic.RSSFeed.feedrefresh") { [weak self] task in
+        backgroundTaskClient.handleBackgroundTask(id: BGTaskIdentifiers.feedRefresh.rawValue) { [weak self] task in
             Task { @MainActor in
                 self?.store.send(.appDelegate(.backgroundFeedRefresh(.onTaskTriggered(task))))
             }
