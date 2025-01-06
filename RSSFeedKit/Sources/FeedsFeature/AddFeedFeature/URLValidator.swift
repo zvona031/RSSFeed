@@ -9,7 +9,7 @@ struct URLValidationClient {
 
 extension URLValidationClient: DependencyKey {
     static let liveValue = URLValidationClient { url in
-        let regex = #"^(https?:\/\/)[a-zA-Z0-9\-._~:\/?#\[\]@!$&'()*+,;=]+"#
+        let regex = #"^(https:\/\/)[a-zA-Z0-9\-._~:\/?#\[\]@!$&'()*+,;=]+"#
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         return predicate.evaluate(with: url)
     }

@@ -76,7 +76,7 @@ public struct AddFeedFeature: Reducer, Sendable {
     }
 
     private func validateAddButton(state: inout State) -> EffectOf<Self> {
-        state.errorMessage = urlValidationClient.isValid(url: state.rawUrl) ? nil : "Please enter a valid URL"
+        state.errorMessage = urlValidationClient.isValid(url: state.rawUrl) ? nil : "Please enter a valid secure URL"
         state.addButtonDisabled = state.errorMessage != nil
         return .none
     }

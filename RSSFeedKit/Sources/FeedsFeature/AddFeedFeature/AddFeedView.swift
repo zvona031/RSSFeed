@@ -11,7 +11,8 @@ public struct AddFeedView: View {
             VStack(alignment: .leading) {
                 RoundedTextField("RSS Feed URL", text: $store.rawUrl)
                     .focused($focus, equals: .url)
-                
+                    .keyboardType(.URL)
+
                 if let errorMessage = store.errorMessage {
                     Text(errorMessage)
                         .font(.system(size: 12))
