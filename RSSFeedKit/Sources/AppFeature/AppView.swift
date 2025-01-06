@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 import FeedsFeature
+import SettingsFeature
 
 public struct AppView: View {
     @Perception.Bindable private var store: StoreOf<AppFeature>
@@ -35,6 +36,18 @@ public struct AppView: View {
                         .renderingMode(.template)
                 }
                 .tag(AppFeature.Tab.favorites)
+
+                NavigationStack {
+                    SettingsView(store: store.scope(state: \.settings, action: \.settings))
+                        .navigationTitle("Settings")
+                        .navigationBarTitleDisplayMode(.inline)
+                }
+                .tabItem {
+                    Text("Settings")
+                    Image(systemName: "gearshape.fill")
+                        .renderingMode(.template)
+                }
+                .tag(AppFeature.Tab.settings)
             }
         }
     }

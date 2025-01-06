@@ -10,7 +10,7 @@ public struct AllFeedsFeature {
 
     @ObservableState
     public struct State: Equatable {
-        var viewState: ViewState
+        public var viewState: ViewState
         @Shared var feeds: IdentifiedArrayOf<FeedFeature.State>
         @Presents var destination: Destination.State?
 

@@ -1,5 +1,9 @@
 import ComposableArchitecture
 import FeedsFeature
+import SettingsFeature
+import Foundation
+import Clients
+import Domain
 
 @Reducer
 public struct AppFeature {
@@ -12,6 +16,7 @@ public struct AppFeature {
         var appDelegate: AppDelegate.State
         var feeds: AllFeedsFeature.State
         var favoriteFeeds: FeedsListFeature.State
+        var settings: SettingsFeature.State
 
         public init(
             tab: Tab = .feeds,
@@ -23,6 +28,7 @@ public struct AppFeature {
             self.feeds = AllFeedsFeature.State(feeds: sharedFeedItems)
             self.favoriteFeeds = FeedsListFeature.State(feeds: sharedFeedItems.favoriteFeeds)
             self.appDelegate = AppDelegate.State(backgroundFeedRefresh: BackgroundFeedRefreshFeature.State(feeds: sharedFeedItems))
+            self.settings = SettingsFeature.State()
         }
     }
 
@@ -31,9 +37,10 @@ public struct AppFeature {
         case feeds(AllFeedsFeature.Action)
         case favoriteFeeds(FeedsListFeature.Action)
         case appDelegate(AppDelegate.Action)
+        case settings(SettingsFeature.Action)
     }
 
-    public var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<AppFeature> {
         BindingReducer()
 
         Scope(state: \.appDelegate, action: \.appDelegate) {
@@ -48,8 +55,21 @@ public struct AppFeature {
             FeedsListFeature()
         }
 
-        Reduce<State, Action> { _, action in
+        Scope(state: \.settings, action: \.settings) {
+            SettingsFeature()
+        }
+
+        Reduce<State, Action> { state, action in
             switch action {
+            case let .appDelegate(.userNotifications(.didReceiveResponse(response, completionHandler))):
+                if let pushNotificationContent = decodePushNotificationContent(response.notification.request.content.userInfo) {
+                    switch pushNotificationContent {
+                    case .rssFeedItemUpdated(let rawUrl):
+                        handleRssFeedItemsUpdatedNotification(state: &state, rawUrl: rawUrl)
+                    }
+                }
+                completionHandler()
+                return .none
             case .appDelegate:
                 return .none
             case .binding:
@@ -58,8 +78,31 @@ public struct AppFeature {
                 return .none
             case .favoriteFeeds:
                 return .none
+            case .settings:
+                return .none
             }
         }
+    }
+
+    private func handleRssFeedItemsUpdatedNotification(state: inout State, rawUrl: String) {
+        guard let url = URL(string: rawUrl),
+              let feedsList = state.feeds.viewState.feedList,
+              let sharedFeedFeatureState = Shared(feedsList.$feeds[id: url].projectedValue),
+              let rssFeed = sharedFeedFeatureState.wrappedValue.viewState.content
+        else {
+            return
+        }
+
+        state.tab = .feeds
+        state.feeds.viewState.modify(\.feedList) { $0.destination = .details(FeedItemsListFeature.State(feed: rssFeed, isFavorite: sharedFeedFeatureState.isFavorite)) }
+    }
+
+    private func decodePushNotificationContent(_ userInfo: [AnyHashable: Any]) -> PushNotificationContent? {
+        guard let data = try? JSONSerialization.data(withJSONObject: userInfo),
+              let pushNotificationContent = try? JSONDecoder().decode(PushNotificationContent.self, from: data) else {
+            return nil
+        }
+        return pushNotificationContent
     }
 }
 
@@ -67,5 +110,6 @@ extension AppFeature {
     public enum Tab {
         case feeds
         case favorites
+        case settings
     }
 }

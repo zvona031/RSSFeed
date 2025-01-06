@@ -5,22 +5,23 @@ import IdentifiedCollections
 
 @DependencyClient
 struct FeedsRefreshClient: Sendable {
-    var refreshFeeds: @Sendable (_ for: [URL]) async -> [Result<RSSFeed, Error>] = { _ in [] }
+    var refreshFeeds: @Sendable (_ for: [URL]) async -> [RSSFeed] = { _ in [] }
 }
 
 extension FeedsRefreshClient: DependencyKey {
     public static let liveValue = FeedsRefreshClient { urls in
         @Dependency(\.rssFeedClient) var rssFeedClient
-        var results: [Result<RSSFeed, Error>] = []
+        var results: [RSSFeed?] = []
 
-        await withTaskGroup(of: Result<RSSFeed, Error>.self) { [rssFeedClient] group in
+        await withTaskGroup(of: RSSFeed?.self) { [rssFeedClient] group in
             for url in urls {
                 group.addTask {
                     do {
                         let rssFeed = try await rssFeedClient.get(url: url)
-                        return .success(.updatedBBC)
+                        return rssFeed
                     } catch {
-                        return .failure(error)
+                        print("Fetching RSS feed with id \(url) failed: \(error.localizedDescription)")
+                        return nil
                     }
                 }
             }
@@ -30,7 +31,7 @@ extension FeedsRefreshClient: DependencyKey {
             }
         }
 
-        return results
+        return results.compactMap { $0 }
     }
 }
 

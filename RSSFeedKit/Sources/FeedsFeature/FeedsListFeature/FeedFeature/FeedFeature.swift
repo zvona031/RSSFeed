@@ -12,8 +12,8 @@ public struct FeedFeature: Sendable {
             url
         }
         let url: URL
-        var viewState: ViewState
-        var isFavorite: Bool
+        public var viewState: ViewState
+        public var isFavorite: Bool
         var isRequestInFlight: Bool
 
         public init(

@@ -9,8 +9,8 @@ public struct FeedsListFeature {
 
     @ObservableState
     public struct State: Equatable {
-        @Shared var feeds: IdentifiedArrayOf<FeedFeature.State>
-        @Presents var destination: Destination.State?
+        @Shared public var feeds: IdentifiedArrayOf<FeedFeature.State>
+        @Presents public var destination: Destination.State?
 
         public init(
             feeds: Shared<IdentifiedArrayOf<FeedFeature.State>>,
@@ -44,7 +44,6 @@ public struct FeedsListFeature {
                 guard let sharedFeed = Shared(state.$feeds[id: id].projectedValue) else {
                     return .none
                 }
-
                 state.destination = .details(FeedItemsListFeature.State(feed: feed, isFavorite: sharedFeed.isFavorite))
                 return .none
             case .feeds:
