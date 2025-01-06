@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		116CA1DE2D2C6F58005E839C /* Clients in Frameworks */ = {isa = PBXBuildFile; productRef = 116CA1DD2D2C6F58005E839C /* Clients */; };
 		1187968A2D16248A00C450DB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 118796892D16248A00C450DB /* AppFeature */; };
 		119EB21F2D20AD73003F545D /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 119EB21E2D20AD73003F545D /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
@@ -42,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				116CA1DE2D2C6F58005E839C /* Clients in Frameworks */,
 				119EB21F2D20AD73003F545D /* ComposableArchitecture in Frameworks */,
 				1187968A2D16248A00C450DB /* AppFeature in Frameworks */,
 			);
@@ -97,6 +99,7 @@
 			packageProductDependencies = (
 				118796892D16248A00C450DB /* AppFeature */,
 				119EB21E2D20AD73003F545D /* ComposableArchitecture */,
+				116CA1DD2D2C6F58005E839C /* Clients */,
 			);
 			productName = RSSFeed;
 			productReference = 1169216F2D16019E0034E568 /* RSSFeed.app */;
@@ -382,6 +385,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		116CA1DD2D2C6F58005E839C /* Clients */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Clients;
+		};
 		118796892D16248A00C450DB /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppFeature;
