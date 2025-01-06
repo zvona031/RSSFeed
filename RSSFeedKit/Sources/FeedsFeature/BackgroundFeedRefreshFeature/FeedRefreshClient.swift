@@ -41,26 +41,3 @@ extension DependencyValues {
         set { self[FeedsRefreshClient.self] = newValue }
     }
 }
-
-extension RSSFeed {
-    static let updatedBBC = RSSFeed(
-        url: URL(string: "https://feeds.bbci.co.uk/news/world/rss.xml")!,
-        websiteUrl: URL(string: "https://www.bbc.co.uk/news/world")!,
-        name: "BBC News",
-        description: "BBC News - World",
-        imageUrl: URL(string: "https://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif"),
-        lastUpdated: Date(),
-        items: IdentifiedArray(
-            uniqueElements: [
-                RSSFeed.Item(
-                    title: "new item",
-                    description: nil,
-                    imageUrl: nil,
-                    url: URL(
-                        string: "www.dummyNewUrl.com"
-                    )!
-                )
-            ]
-        )
-    )
-}
