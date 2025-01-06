@@ -42,28 +42,3 @@ private extension URL {
         return Self.documentsDirectory.appending(component: filename)
     }
 }
-
-fileprivate extension RSSFeed.Item {
-    init(_ feedItemDto: RSSFeedDTO.ItemDTO) {
-        self.init(
-            title: feedItemDto.title,
-            description: feedItemDto.description,
-            imageUrl: feedItemDto.imageUrl,
-            url: feedItemDto.url
-        )
-    }
-}
-
-fileprivate extension RSSFeed {
-    init(_ feedDto: RSSFeedDTO, url: URL) {
-        self.init(
-            url: url,
-            websiteUrl: feedDto.websiteUrl,
-            name: feedDto.name,
-            description: feedDto.description,
-            imageUrl: feedDto.imageUrl,
-            lastUpdated: feedDto.lastUpdated,
-            items: IdentifiedArray(feedDto.items.map { RSSFeed.Item($0) }, uniquingIDsWith: { first, _ in first })
-        )
-    }
-}

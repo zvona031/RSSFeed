@@ -5,12 +5,12 @@ extension RSSFeed {
         public var id: URL {
             url
         }
-        public let title: String
-        public let description: String?
-        public let imageUrl: URL?
-        public let url: URL
+        let title: String
+        let description: String?
+        let imageUrl: URL?
+        let url: URL
 
-        public init(
+        init(
             title: String,
             description: String?,
             imageUrl: URL?,
@@ -20,6 +20,15 @@ extension RSSFeed {
             self.description = description
             self.imageUrl = imageUrl
             self.url = url
+        }
+
+        init(_ feedItemDto: RSSFeedDTO.ItemDTO) {
+            self.init(
+                title: feedItemDto.title,
+                description: feedItemDto.description,
+                imageUrl: feedItemDto.imageUrl,
+                url: feedItemDto.url
+            )
         }
     }
 }

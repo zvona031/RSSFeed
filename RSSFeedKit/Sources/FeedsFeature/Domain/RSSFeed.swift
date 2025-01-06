@@ -5,15 +5,15 @@ public struct RSSFeed: Identifiable, Sendable, Equatable {
     public var id: URL {
         url
     }
-    public let url: URL
-    public let websiteUrl: URL
-    public let name: String
-    public let description: String
-    public let imageUrl: URL?
-    public let lastUpdated: Date
-    public let items: IdentifiedArrayOf<Item>
+    let url: URL
+    let websiteUrl: URL
+    let name: String
+    let description: String
+    let imageUrl: URL?
+    let lastUpdated: Date
+    let items: IdentifiedArrayOf<Item>
 
-    public init(
+    init(
         url: URL,
         websiteUrl: URL,
         name: String,
@@ -29,5 +29,17 @@ public struct RSSFeed: Identifiable, Sendable, Equatable {
         self.imageUrl = imageUrl
         self.lastUpdated = lastUpdated
         self.items = items
+    }
+
+    init(_ feedDto: RSSFeedDTO, url: URL) {
+        self.init(
+            url: url,
+            websiteUrl: feedDto.websiteUrl,
+            name: feedDto.name,
+            description: feedDto.description,
+            imageUrl: feedDto.imageUrl,
+            lastUpdated: feedDto.lastUpdated,
+            items: IdentifiedArray(feedDto.items.map { RSSFeed.Item($0) }, uniquingIDsWith: { first, _ in first })
+        )
     }
 }
