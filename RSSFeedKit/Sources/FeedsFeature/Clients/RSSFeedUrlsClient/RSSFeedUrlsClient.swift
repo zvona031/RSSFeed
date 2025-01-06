@@ -16,7 +16,7 @@ extension RSSFeedUrlsClient: DependencyKey {
     }
 
     static let liveValue = {
-        let fileRssFeedUrlsClient = FileRSSFeedURLClient(encoder: JSONEncoder(), decoder: JSONDecoder(), url: .rssFeedUrls)
+        let fileRssFeedUrlsClient = FileRSSFeedURLClient(filename: .rssFeedUrls)
         return RSSFeedUrlsClient {
             try fileRssFeedUrlsClient.load()
         } save: { feedModel in
@@ -51,6 +51,6 @@ extension DependencyValues {
     }
 }
 
-private extension URL {
-    static let rssFeedUrls = Self.documentsDirectory.appending(component: "rssFeedUrls.json")
+private extension String {
+    static let rssFeedUrls = "rssFeedUrls"
 }

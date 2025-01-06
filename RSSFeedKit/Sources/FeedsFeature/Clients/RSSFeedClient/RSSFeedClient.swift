@@ -12,7 +12,7 @@ extension RSSFeedClient: DependencyKey {
     static let liveValue = RSSFeedClient { url in
         @Dependency(\.urlSession) var urlSession
         @Dependency(\.rssFeedMapper) var mapper
-        let cacheRssFeedClient = FileRSSFeedClient(encoder: JSONEncoder(), decoder: JSONDecoder())
+        let cacheRssFeedClient = FileRSSFeedClient()
         do {
             let data = try await urlSession.data(from: url)
             let feed = try mapper.map(data.0, url)

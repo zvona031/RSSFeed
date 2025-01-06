@@ -2,28 +2,21 @@ import Foundation
 import Dependencies
 
 struct FileRSSFeedURLClient {
-    private let encoder: JSONEncoder
-    private let decoder: JSONDecoder
-    private let url: URL
-    @Dependency(\.dataClient) private var dataClient
+    private let filename: String
+    @Dependency(\.fileClient) private var fileClient
 
-    init(encoder: JSONEncoder, decoder: JSONDecoder, url: URL) {
-        self.encoder = encoder
-        self.decoder = decoder
-        self.url = url
+    init(filename: String) {
+        self.filename = filename
     }
 
-    func save(_ reminders: [RSSFeedModel]) throws {
-        let data = try encoder.encode(reminders)
-        try dataClient.save(data: data, url: url)
+    func save(_ rssFeedModels: [RSSFeedModel]) throws {
+        try fileClient.save(rssFeedModels, to: filename)
     }
 
     func load() throws -> [RSSFeedModel] {
-        guard dataClient.fileExists(at: url.path()) else {
+        guard fileClient.fileExists(at: filename) else {
             return []
         }
-        let data = try dataClient.load(url: url)
-        let reminders = try decoder.decode([RSSFeedModel].self, from: data)
-        return reminders
+        return try fileClient.load([RSSFeedModel].self, from: filename)
     }
 }
