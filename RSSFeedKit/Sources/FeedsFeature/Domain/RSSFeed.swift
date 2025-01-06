@@ -10,6 +10,7 @@ public struct RSSFeed: Identifiable, Sendable, Equatable {
     public let name: String
     public let description: String
     public let imageUrl: URL?
+    public let lastUpdated: Date
     public let items: IdentifiedArrayOf<Item>
 
     public init(
@@ -18,6 +19,7 @@ public struct RSSFeed: Identifiable, Sendable, Equatable {
         name: String,
         description: String,
         imageUrl: URL?,
+        lastUpdated: Date,
         items: IdentifiedArrayOf<Item>
     ) {
         self.url = url
@@ -25,6 +27,7 @@ public struct RSSFeed: Identifiable, Sendable, Equatable {
         self.name = name
         self.description = description
         self.imageUrl = imageUrl
+        self.lastUpdated = lastUpdated
         self.items = items
     }
 }

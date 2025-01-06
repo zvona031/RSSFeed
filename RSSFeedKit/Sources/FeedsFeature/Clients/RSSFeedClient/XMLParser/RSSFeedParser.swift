@@ -1,6 +1,8 @@
 import Foundation
+import Dependencies
 
 class RSSFeedParser: XMLFeedParser {
+    @Dependency(\.date) var date
     private let itemXmlParser: FeedItemParser
     private let imageXmlParser: FeedImageParser
 
@@ -21,7 +23,7 @@ class RSSFeedParser: XMLFeedParser {
             rssFeed.reset()
         }
 
-        return try rssFeed.toRSSFeedDTO()
+        return try rssFeed.toRSSFeedDTO(now: date.now)
     }
 
     func didStartElement(elementName: String, attributes attributeDict: [String: String]) {
@@ -109,7 +111,7 @@ class RSSFeedParser: XMLFeedParser {
         var imageUrl: URL?
         var items: [RSSFeedDTO.ItemDTO] = []
 
-        func toRSSFeedDTO() throws -> RSSFeedDTO {
+        func toRSSFeedDTO(now: Date) throws -> RSSFeedDTO {
             guard let websiteUrl else {
                 throw ParsingError.missingFeedUrl
             }
@@ -124,6 +126,7 @@ class RSSFeedParser: XMLFeedParser {
                 name: title.trimmingCharacters(in: .whitespacesAndNewlines),
                 description: description.trimmingCharacters(in: .whitespacesAndNewlines),
                 imageUrl: imageUrl,
+                lastUpdated: now,
                 items: items
             )
         }

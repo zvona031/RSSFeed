@@ -49,6 +49,7 @@ extension RSSFeed {
         name: "BBC News",
         description: "BBC News - World",
         imageUrl: URL(string: "https://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif"),
+        lastUpdated: Date(),
         items: IdentifiedArray(
             uniqueElements: [
                 RSSFeed.Item(

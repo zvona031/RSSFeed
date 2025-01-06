@@ -38,11 +38,6 @@ public struct AllFeedsView: View {
                         send(.addButtonTapped)
                     }
                 }
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Trigger") {
-                        
-                    }
-                }
             }
             .sheet(item: $store.scope(state: \.destination?.addFeed, action: \.destination.addFeed)) { store in
                 NavigationStack {

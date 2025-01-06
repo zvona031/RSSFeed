@@ -42,6 +42,7 @@ fileprivate extension RSSFeed {
             name: feedDto.name,
             description: feedDto.description,
             imageUrl: feedDto.imageUrl,
+            lastUpdated: feedDto.lastUpdated,
             items: IdentifiedArray(feedDto.items.map { RSSFeed.Item($0) }, uniquingIDsWith: { first, _ in first })
         )
     }

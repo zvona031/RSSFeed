@@ -32,7 +32,11 @@ public struct FeedView: View {
                     .frame(maxWidth: .infinity)
                     .layoutPriority(1)
                 case .content(let rssFeed):
-                    ItemView(url: rssFeed.imageUrl, title: rssFeed.name, description: rssFeed.description)
+                    VStack(alignment: .leading) {
+                        ItemView(url: rssFeed.imageUrl, title: rssFeed.name, description: rssFeed.description)
+                        Text("Last updated: \(rssFeed.lastUpdated.formatted(date: .abbreviated, time: .shortened))")
+                            .font(.footnote)
+                    }
 
                     LoadableButton(isRequestInFlight: store.isRequestInFlight) {
                         send(.refreshButtonTapped)
@@ -52,7 +56,7 @@ public struct FeedView: View {
                         .frame(width: 24, height: 24)
                 }
             }
-            .frame(height: 60)
+            .frame(height: 70)
             .padding(6)
             .roundedShadow()
             .onTapGesture {

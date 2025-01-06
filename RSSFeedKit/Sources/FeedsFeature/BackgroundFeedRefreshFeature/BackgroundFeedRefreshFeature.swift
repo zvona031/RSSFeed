@@ -72,7 +72,6 @@ public struct BackgroundFeedRefreshFeature {
             return scheduleBackgroundFeedRefreshTask(state: state)
         } else {
             backgroundTaskClient.cancel(id: BGTaskIdentifiers.feedRefresh.rawValue)
-            print("Background task canceled")
             return .none
         }
     }
@@ -84,7 +83,6 @@ public struct BackgroundFeedRefreshFeature {
         let beginDate = Date(timeIntervalSinceNow: 30 * 60)
         do {
             try backgroundTaskClient.schedule(id: BGTaskIdentifiers.feedRefresh.rawValue, beginDate: beginDate)
-            print("Background task scheduled")
         } catch {
             print("Failed to schedule background refresh task: \(error.localizedDescription)")
         }
