@@ -54,7 +54,9 @@ public struct BackgroundFeedRefreshFeature {
             case .taskFinished:
                 state.appRefreshTask?.setTaskCompleted(success: true)
                 state.appRefreshTask = nil
-                return .none
+                return .run { send in
+                    await send(.scheduleTask)
+                }
             case .scheduleTask:
                 return scheduleBackgroundFeedRefreshTask(state: state)
             case .onTaskTriggered(let task):
@@ -93,8 +95,9 @@ public struct BackgroundFeedRefreshFeature {
         guard let appRefreshTask = task as? BGAppRefreshTask,
             !state.feeds.isEmpty
         else {
-            task.setTaskCompleted(success: true)
-            return .none
+            return .run { send in
+                await send(.taskFinished)
+            }
         }
         state.appRefreshTask = appRefreshTask
         return .run { [urls = state.feeds.map { $0.url }, feedsRefreshClient] send in
