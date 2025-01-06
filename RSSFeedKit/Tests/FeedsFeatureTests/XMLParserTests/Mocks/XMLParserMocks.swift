@@ -1,4 +1,4 @@
-import FeedsFeature
+@testable import FeedsFeature
 import Foundation
 
 @MainActor

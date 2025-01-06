@@ -1,21 +1,23 @@
-import FeedsFeature
+@testable import FeedsFeature
 import Foundation
 
 @MainActor
 enum RSSFeedDTOMocks {
     static let zeroItemsFeed = RSSFeedDTO(
-        url: URL(string: "https://www.bbc.co.uk/news/world")!,
+        websiteUrl: URL(string: "https://www.bbc.co.uk/news/world")!,
         name: "BBC News",
         description: "BBC News - World",
         imageUrl: URL(string: "https://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif"),
+        lastUpdated: Date(timeIntervalSince1970: 1234567890),
         items: []
     )
 
     static let multipleItemsFeed = RSSFeedDTO(
-        url: URL(string: "https://www.bbc.co.uk/news/world")!,
+        websiteUrl: URL(string: "https://www.bbc.co.uk/news/world")!,
         name: "BBC News",
         description: "BBC News - World",
         imageUrl: URL(string: "https://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif"),
+        lastUpdated: Date(timeIntervalSince1970: 1234567890),
         items: [
             RSSFeedDTO.ItemDTO(
                 url: URL(string: "https://www.bbc.com/news/articles/c3vrzelzdrlo")!,

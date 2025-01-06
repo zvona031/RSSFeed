@@ -1,5 +1,6 @@
 import Testing
 import Foundation
+import Dependencies
 @testable import FeedsFeature
 
 @MainActor
@@ -45,7 +46,12 @@ struct RSSFeedXMLParserTests {
 
 extension RSSFeedXMLParserTests {
     func makeParser() -> RSSFeedXMLParser {
-        let feedParser = RSSFeedParser(itemXmlParser: FeedItemParser(), imageXmlParser: FeedImageParser())
+        let feedParser = withDependencies {
+            $0.date.now = Date(timeIntervalSince1970: 1234567890)
+          } operation: {
+              RSSFeedParser(itemXmlParser: FeedItemParser(), imageXmlParser: FeedImageParser())
+          }
+
         return RSSFeedXMLParser(feedParser: feedParser)
     }
 }
