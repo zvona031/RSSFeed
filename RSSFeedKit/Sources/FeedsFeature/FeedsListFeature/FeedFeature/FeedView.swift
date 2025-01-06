@@ -25,12 +25,19 @@ public struct FeedView: View {
                         .layoutPriority(1)
 
                     CircularProgressView()
+
                 case .error:
-                    Button("Retry") {
-                        send(.retryButtonTapped)
+                    VStack {
+                        Text(store.url.absoluteString)
+                            .font(.subheadline)
+                            .lineLimit(1)
+                        Button("Retry") {
+                            send(.retryButtonTapped)
+                        }
                     }
                     .frame(maxWidth: .infinity)
                     .layoutPriority(1)
+
                 case .content(let rssFeed):
                     VStack(alignment: .leading) {
                         ItemView(url: rssFeed.imageUrl, title: rssFeed.name, description: rssFeed.description)
