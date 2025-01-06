@@ -6,13 +6,33 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		116CA1DE2D2C6F58005E839C /* Clients in Frameworks */ = {isa = PBXBuildFile; productRef = 116CA1DD2D2C6F58005E839C /* Clients */; };
+		1187968A2D16248A00C450DB /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 118796892D16248A00C450DB /* AppFeature */; };
+		119EB21F2D20AD73003F545D /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 119EB21E2D20AD73003F545D /* ComposableArchitecture */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		1169216F2D16019E0034E568 /* RSSFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSSFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		118796872D1611DC00C450DB /* RSSFeedKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RSSFeedKit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		11205E512D27DB2600573C77 /* Exceptions for "RSSFeed" folder in "RSSFeed" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1169216E2D16019E0034E568 /* RSSFeed */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		116921712D16019E0034E568 /* RSSFeed */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				11205E512D27DB2600573C77 /* Exceptions for "RSSFeed" folder in "RSSFeed" target */,
+			);
 			path = RSSFeed;
 			sourceTree = "<group>";
 		};
@@ -23,6 +43,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				116CA1DE2D2C6F58005E839C /* Clients in Frameworks */,
+				119EB21F2D20AD73003F545D /* ComposableArchitecture in Frameworks */,
+				1187968A2D16248A00C450DB /* AppFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,7 +55,9 @@
 		116921662D16019E0034E568 = {
 			isa = PBXGroup;
 			children = (
+				118796872D1611DC00C450DB /* RSSFeedKit */,
 				116921712D16019E0034E568 /* RSSFeed */,
+				118796882D16248A00C450DB /* Frameworks */,
 				116921702D16019E0034E568 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +68,13 @@
 				1169216F2D16019E0034E568 /* RSSFeed.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		118796882D16248A00C450DB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +97,9 @@
 			);
 			name = RSSFeed;
 			packageProductDependencies = (
+				118796892D16248A00C450DB /* AppFeature */,
+				119EB21E2D20AD73003F545D /* ComposableArchitecture */,
+				116CA1DD2D2C6F58005E839C /* Clients */,
 			);
 			productName = RSSFeed;
 			productReference = 1169216F2D16019E0034E568 /* RSSFeed.app */;
@@ -94,6 +129,9 @@
 			);
 			mainGroup = 116921662D16019E0034E568;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				119EB21D2D20AD73003F545D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 116921702D16019E0034E568 /* Products */;
 			projectDirPath = "";
@@ -177,7 +215,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -234,7 +272,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -251,15 +289,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"RSSFeed/Preview Content\"";
-				DEVELOPMENT_TEAM = 87P2XS5ZD2;
+				DEVELOPMENT_TEAM = 4JDZ4BJ4PW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RSSFeed/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -267,9 +306,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zvonimirpavlovic.RSSFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -280,15 +323,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"RSSFeed/Preview Content\"";
-				DEVELOPMENT_TEAM = 87P2XS5ZD2;
+				DEVELOPMENT_TEAM = 4JDZ4BJ4PW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RSSFeed/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -296,9 +340,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zvonimirpavlovic.RSSFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -324,6 +372,33 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		119EB21D2D20AD73003F545D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.17.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		116CA1DD2D2C6F58005E839C /* Clients */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Clients;
+		};
+		118796892D16248A00C450DB /* AppFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppFeature;
+		};
+		119EB21E2D20AD73003F545D /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 119EB21D2D20AD73003F545D /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 116921672D16019E0034E568 /* Project object */;
 }

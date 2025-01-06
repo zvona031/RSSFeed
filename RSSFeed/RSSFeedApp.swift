@@ -1,17 +1,13 @@
-//
-//  RSSFeedApp.swift
-//  RSSFeed
-//
-//  Created by Zvonimir Pavlović on 20.12.2024..
-//
-
 import SwiftUI
+import AppFeature
 
 @main
 struct RSSFeedApp: App {
+    @UIApplicationDelegateAdaptor(SceneDelegate.self) private var appDelegate
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AppView(store: self.appDelegate.store)
         }
     }
 }
