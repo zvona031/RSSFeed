@@ -20,7 +20,6 @@ extension UserNotificationClient: DependencyKey {
         AsyncStream { continuation in
             let delegate = Delegate(continuation: continuation)
             UNUserNotificationCenter.current().delegate = delegate
-            // TODO: check this
             continuation.onTermination = { _ in
                 _ = delegate
             }
