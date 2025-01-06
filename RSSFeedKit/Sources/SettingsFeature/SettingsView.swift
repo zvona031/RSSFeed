@@ -13,7 +13,7 @@ public struct SettingsView: View {
     public var body: some View {
         WithPerceptionTracking {
             if store.isPushNotificationsWarningMessageVisible {
-                HStack {
+                HStack(spacing: 4) {
                     Text("Push notifications are disabled in the")
                         .font(.footnote)
                     Text("settings")
